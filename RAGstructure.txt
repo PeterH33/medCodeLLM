@@ -1,0 +1,84 @@
+This structure was presented in a meeting during the summer, really do want to find that presentation and the presented to credit the work.
+pip langchain langchain_community langchain_huggingface langchain_openai langchain_text_splitters faiss-cpu 
+
+import os
+
+# Splitter that recusively tries different seperators
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+#Local embedding model
+from langchain_huggingface import HuggingFaceEmbeddings
+
+#openai chat model 
+from langchain_openai import ChatOpenAI
+
+#FAISS fast vector similarity search library
+#stores embeddings and finds similar chunks efficiently
+from langchain_community.vectorstores import FAISS
+
+#Chain that combines retrieval with question answering
+from langchain.chains import RetrievalQA
+
+#Document class to store text chunks with metadata
+from langchain.docstore.document import Document
+
+# Set the ai key in os env
+os.environ["OPENAI_API_KEY"] =
+
+
+# 1,2 Loading documents
+csv_filenames = [names.csv]
+
+documents = []
+for filename in csv_filenames:
+	file_path = filename
+	try:
+		with open(filePath, 'r', encoding='utf-8') as f:
+			fileContent = f.read()
+		doc = Document(pageContent = fileContent, metadata={'source_file": filename} )
+		documents.append(doc)
+	except:errors
+if not documents: no doc loaded
+
+
+# 3 Split docs into chunks, makes retrieval easier, sys finds sections not just whole docs
+textSplitter = RecursiveCharacterTextSplitter( chunk_size=4000, chunk_overlap=500, length_function=len )
+splitTexts = textSplitter.split_documents(documents)
+
+# 4 Create local embeddings
+try:
+	embeddingModel = HuggingFaceEmbeddings(model_name:'all-MiniLM-L6-v2'
+except: errors
+
+
+# 5 Store chunks in a vector db
+try:
+	vectorStore= FAISS.from_documents(splitTexts, embeddingsModel)
+except: err
+
+
+# 6 Setup retriever
+retriever = vector_store.as_retriever(search_kwargs={"k":3})
+
+
+# 7 Define the llm
+llm = ChatOpenAI( model_name="gpt-4.1-nano", temperature=0.1 )
+
+
+# 8 Create the retrievalQA Chain
+qaChain = RetrievalQA.from_chain_type( llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True )
+
+--RAG is ready now--
+
+# 9 Query the system
+def askQuestion(question):
+try:
+	result = qaChain.invoke({"query": question})
+
+	print("ans: {result['result']}")
+	print("sourcedocs")
+		for i, source_doc_chunk in enumberate(result['source_documents'])
+			print(f" ChunkNumber{i+1} File: {source_doc_chunk.metadata.get('source_file', 'N/A')}
+			print(f"Content snippet: {source_doc_chunk.page_contetn[:350]})
+except:err
+
