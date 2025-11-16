@@ -28,28 +28,41 @@ keys = {fn: open(fn).read() for fn in keyFiles}
 with open('results/' + targetFile) as f:
     targetText = f.read()
 
-pattern = r'"original_document":\s"(.*?)",'
-instances = re.findall(pattern, targetText, flags=re.DOTALL)
+modelPattern = r'Starting query using model\s+(.*?)\s+please wait\.\.\.(.*?)Time:'
+modelBlocks = re.findall(modelPattern, targetText, flags=re.DOTALL)
+
+docPattern = r'"original_document":\s"(.*?)",'
 
 def similarity(a, b):
     return difflib.SequenceMatcher(None, a, b).ratio()
 
 results = []
 
-for i, inst in enumerate(instances, start=1):
-    bestKey = 'No match'
-    bestScore = 0
+for modelName, blockText in modelBlocks:
 
-    for kname, ktext in keys.items():
-        score = similarity(inst, ktext)
-        if score > bestScore:
-            bestScore = score
-            bestKey = kname
+    # find all document blocks inside this model output
+    documents = re.findall(docPattern, blockText, flags=re.DOTALL)
+    if not documents:
+        results.append((modelName, 'Model Failed JSON gen', 0, 0))
 
-    errorRate = 1 - bestScore
-    results.append((i, bestKey, bestScore, errorRate))
+    for doc in documents:
 
-print('Instance | Matched Key           | Similarity | Error Rate')
+        bestKey = "No match"
+        bestScore = 0
+
+        for kname, ktext in keys.items():
+            score = similarity(doc, ktext)
+            if score > bestScore:
+                bestScore = score
+                bestKey = kname
+
+        errorRate = 1 - bestScore
+
+        # save: Model | Key | Similarity | Error Rate
+        results.append((modelName, bestKey, bestScore, errorRate))
+
+
+print('Model           | Matched Key           | Similarity | Error Rate')
 print('--------------------------------------------------')
-for inst, key, sim, err in results:
-    print(f'{inst:8} | {key:21} | {sim:.3f}     | {err:.3f}')
+for model, key, sim, err in results:
+    print(f'{model:15} | {key:21} | {sim:.3f}     | {err:.3f}')
