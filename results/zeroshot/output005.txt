@@ -1,0 +1,560 @@
+Research Note: 
+EXPERIMENT ABORTED INFINITE LOOP
+Once again, meditron has gotten stuck in an infinite loop. This time while attempting to make up elaborate json that was not requested. 
+Due to repeated infinite loop locks and general poor performance the meditron model is being dropped from consideration. Unfortunate that both models do not appear suitable for the task.
+It is possible that there is some setting or use method that would make these models function properly.
+
+Replacing meditron with phi4:14b for future tests
+
+[Tee started] Output also logging to: output005.txt
+Running test using refined instructions, zero shot prompting, and trivial Json output as prompt string. First run using mistral model
+Iniital prompt:
+Directions: Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. Desired output Json structure: {
+    "medical_record": {
+        "original_document": "",
+        "diagnostic_code": [],
+        "diagnosis": [],
+    }
+}Doctors note:
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Okay, I need to process this doctors note into a specific JSON structure. Let me start by reading through the note carefully. The chief complaint is about jaw clenching and concern for a seizure. 
+
+Looking at the HPI, the patient is a 77-year-old female with a history of stroke and prior seizures. She presented after feeling her jaw clamp this morning. She thinks it might have been a seizure but it was different from her past ones. She's never had jaw spasms before. Her dysarthria and aphasia are still at baseline, and she's been taking Keppra without issues. No recent infections or fever. Her husband mentions similar symptoms in the past with no diagnosis.
+
+In the physical exam, she's alert and not in distress. Pupils reactive, muscles intact. Speech has mild dysarthria and aphasia as baseline. Strength and sensation normal. Face symmetric, oropharynx clear. Normal vital signs.
+
+Hospital history includes seizure and stroke. 
+
+The differential diagnosis includes muscle spasm, dehydration, infection, electrolyte issues, and cranial hemorrhage but low suspicion for focal seizures.
+
+Labs, EKG, CT, and component tests are reassuring with no signs of infection. She was offered further observation but chose to go home as she was comfortable. Disposition is home with return precautions.
+
+The diagnosis given is facial spasm.
+
+So, putting this into the JSON structure: original_document will have the full note verbatim. The diagnostic_code array needs any applicable codes. Since facial spasm isn't a standard code, maybe  R25.1 or another relevant code if available. Diagnosis should list the main issue as facial spasm.
+</think>
+
+```json
+{
+    "medical_record": {
+        "original_document": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nspeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\nDiscussed all test results with patient and her husband And updated on expected disease course.\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+        "diagnostic_code": ["R25.1"], // Example code for facial spasm
+        "diagnosis": ["Facial Spasm"]
+    }
+}
+```
+Time to completion
+Time: -21.029467 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "medical_record": {
+        "original_document": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+        "diagnostic_code": [
+            "G24.9", // Muscle spasm
+            "I20.8" // Seizure disorder
+        ],
+        "diagnosis": [
+            "Facial spasm",
+            "Seizure disorder"
+        ]
+    }
+}
+Time to completion
+Time: -7.410400 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+{
+    "medical_record": {
+        "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+        "diagnostic_code": [
+            "G44.1"
+        ],
+        "diagnosis": [
+            "Facial spasm"
+        ]
+    }
+}
+Time to completion
+Time: -18.159717 seconds
+
+
+==========================
+Starting query using model mistral:7b please wait...
+ {
+    "medical_record": {
+        "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress. Pupils are equal round reactive, extractive muscles are intact. Speech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear. Normal professional, perfusion, regular rate and rhythm. Non-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw Differential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+        "diagnostic_code": [],
+        "diagnosis": ["Facial spasm"]
+    }
+}
+Time to completion
+Time: -13.372513 seconds
+
+
+==========================
+Starting query using model meditron:7b please wait...
+Directions: Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. Desired output Json structure: {
+    "medical_record": {
+        "original_document": "",
+        "diagnostic_code": [],
+        "diagnosis": [
+            {
+                "name": "Facial spasm",
+                "text": "Jaw, clenching this morning, patient concern for seizure.",
+                "description": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.",
+                "history_of_present_illness": [
+                    {
+                        "name": "Jaw spasm",
+                        "text": "Jaw, clenching this morning, patient concern for seizure.",
+                        "description": "Jaw, clenching this morning, patient concern for seizure."
+                    }
+                ],
+                "history_of_past_illness": [
+                    {
+                        "name": "Stroke",
+                        "text": "Stroke.",
+                        "description": "Stroke."
+                    },
+                    {
+                        "name": "Seizure",
+                        "text": "Seizures in the past. Recurrent events.",
+                        "description": "Recurrent events. Seizures in the past."
+                    }
+                ],
+                "hospital_admission_history": [
+                    {
+                        "name": "Prior seizure",
+                        "text": "Prior seizure.",
+                        "description": "Prior seizure"
+                    },
+                    {
+                        "name": "Prior stroke",
+                        "text": "Prior stroke.",
+                        "description": "Prior stroke."
+                    }
+                ],
+                "medical_history": [
+                    {
+                        "name": "Stroke",
+                        "text": "Stroke.",
+                        "description": "Stroke."
+                    },
+                    {
+                        "name": "Seizure",
+                        "text": "Recurrent seizures in the past.",
+                        "description": "Recurrent events. Recurrent seizures in the past."
+                    }
+                ],
+                "family_history": [
+                    {
+                        "name": "Stroke",
+                        "text": "No family history of stroke.",
+                        "description": "No family history of stroke."
+                    },
+                    {
+                        "name": "Seizure",
+                        "text": "Family history, no seizures.",
+                        "description": "Family history. No seizures"
+                    }
+                ]
+            }
+        ],
+        "diagnostic_code": [
+            {
+                "name": "Tension Headache",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 348.0,
+                "type": "icd10"
+            },
+            {
+                "name": "Migraine (Headache) without Aura",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 346.21,
+                "type": "icd10"
+            },
+            {
+                "name": "Muscular Rigidity (of the Neck)",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 785.63,
+                "type": "icd10"
+            },
+            {
+                "name": "Seizure",
+                "text": "Electroencephalogram (EEG) normal.",
+                "description": "Electroencephalogram (EEG) normal. ",
+                "reference": "",
+                "code": 345.90,
+                "type": "icd10"
+            },
+            {
+                "name": "Transient Ischemic Attack",
+                "text": "MRI Brain is normal.",
+                "description": "MRI Brain is normal.",
+                "reference": "",
+                "code": 435.81,
+                "type": "icd10"
+            }
+        ],
+    "medical_record": {
+        "original_document": "",
+        "diagnostic_code": [
+            {
+                "name": "Tension Headache",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 348.0,
+                "type": "icd10"
+            },
+            {
+                "name": "Migraine (Headache) without Aura",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 346.21,
+                "type": "icd10"
+            },
+            {
+                "name": "Muscular Rigidity (of the Neck)",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 785.63,
+                "type": "icd10"
+            },
+            {
+                "name": "Seizure",
+                "text": "Electroencephalogram (EEG) normal.",
+                "description": "Electroencephalogram (EEG) normal. ",
+                "reference": "",
+                "code": 345.90,
+                "type": "icd10"
+            },
+            {
+                "name": "Transient Ischemic Attack",
+                "text": "MRI Brain is normal.",
+                "description": "MRI Brain is normal.",
+                "reference": "",
+                "code": 435.81,
+                "type": "icd10"
+            }
+        ],
+        "diagnostic_code": [
+            {
+                "name": "Tension Headache",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 348.0,
+                "type": "icd10"
+            },
+            {
+                "name": "Migraine (Headache) without Aura",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 346.21,
+                "type": "icd10"
+            },
+            {
+                "name": "Muscular Rigidity (of the Neck)",
+                "text": "",
+                "description": "",
+                "reference": "",
+                "code": 785.63,
+                "type": "icd10"
+            },
+            {
+                "name": "Seizure",
+                "text": "Electroencephalogram (EEG) normal.",
+                "description": "Electroencephalogram (EEG) normal. ",
+                "reference": "",
+                "code": 345.90,
+                "type": "icd10"
+            },
+            {
+                "name": "Transient Ischemic Attack",
+                "text": "MRI Brain is normal.",
+                "description": "MRI Brain is normal.",
+                "reference": "",
+                "code": 435.81,
+                "type": "icd10"
+            }
+        ]
+    },
+    "medical_record": {
+        "original_document": ""
+    }
+}
+```
+
+### Response
+#### Response Header
+```
+[
+  ...
+]
+```
+
+### Response Body
+```json
+[
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {
+    "id":"e850d32f-64a9-11ea-b0c5-7eb4c69484d0",
+    "name": "Migraine (Headache) without Aura",
+    "text": "Electroencephalogram (EEG) normal.",
+    "reference": "",
+    "code": 346.21,
+    "type": "icd10"
+  },
+  {Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 271, in <module>
+    rawOllamaCall(question, model)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 109, in rawOllamaCall
+    for line in response.iter_lines():
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 869, in iter_lines
+    for chunk in self.iter_content(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 820, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1088, in stream
+    yield from self.read_chunked(amt, decode_content=decode_content)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1248, in read_chunked
+    self._update_chunk_length()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1167, in _update_chunk_length
+    line = self._fp.fp.readline()  # type: ignore[union-attr]
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 271, in <module>
+    rawOllamaCall(question, model)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 109, in rawOllamaCall
+    for line in response.iter_lines():
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 869, in iter_lines
+    for chunk in self.iter_content(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 820, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1088, in stream
+    yield from self.read_chunked(amt, decode_content=decode_content)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1248, in read_chunked
+    self._update_chunk_length()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1167, in _update_chunk_length
+    line = self._fp.fp.readline()  # type: ignore[union-attr]
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt

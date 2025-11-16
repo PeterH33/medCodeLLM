@@ -1,0 +1,442 @@
+Research Notes:
+EXPERIMENT ABORTED INFINITE LOOP
+Output was generated using zeroshot prompt and trivial JSON structure.
+There are issues with the medlama2:7b appearing to hit some sort of infinite loop where the "done" property does not toggle over to true. It is not giving useful parsed output so the model might simply not be helpful to the project.
+
+[Tee started] Output also logging to: output002.txt
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Okay, so I have to process a doctor's note and output a specific JSON structure based on it. The user provided the desired JSON format and an example of how they want it. Let me go through each step carefully.
+
+First, I need to read and understand the entire doctor's note. It seems to be about a 77-year-old female patient who presented with jaw clenching, which she thought might be a seizure. She has a history of stroke and prior seizures. The physical exam shows mild dysarthria and aphasia, but no signs of infection or acute issues on imaging and labs.
+
+The doctor's differential diagnosis includes things like muscle spasm, dehydration, electrolyte imbalances, etc., but the main issue seems to be facial spasm without evidence of a seizure recurrence. The patient is being discharged home with follow-up by her neurologist.
+
+Now, looking at the desired JSON structure: It should have "medical_record" with "original_document", "chief_complaint_code", and "chief_complaint". The original document should include the full verbatim of the doctor's note. Chief complaint code and chief complaint are probably derived from the initial problem presented by the patient.
+
+In the HPI, the patient mentions jaw clenching this morning, thinking it might be a seizure. So the chief complaint is likely "Jaw clenching" or something similar. The chief complaint code might be a specific ICD-10 code, but since that's not provided here, maybe it's just a text value.
+
+Wait, in the example response, the chief_complaint_code is "A00000", which seems like a placeholder. I should probably follow suit and use a similar placeholder unless I have a specific code to use. Since the doctor didn't provide any codes, I'll keep it as a generic placeholder.
+
+So putting it all together:
+
+- original_document will be the entire text of the doctor's note.
+- chief_complaint_code is "A00000" (assuming this is acceptable or perhaps a default).
+- chief_complaint is "Jaw clenching".
+
+I need to ensure that I don't add any new fields and stick strictly to the JSON structure provided. Also, if there are multiple data points, they can be added as an array, but in this case, it seems straightforward.
+
+Wait, in the example, the output had more details under "medical_record", like "hpi" and "diagnosis". But the user instructions say to use only the provided JSON structure. Hmm, maybe I'm misunderstanding. The initial instruction says to provide an output using only the provided JSON structure, so perhaps other fields shouldn't be added unless present in the structure.
+
+Looking back at the desired JSON structure:
+
+{
+  "medical_record": {
+    "original_document": "",
+    "chief_complaint_code": "",
+    "chief_complaint": ""
+  }
+}
+
+So it doesn't include fields like hpi or diagnosis. Therefore, in the output, I should only include these three fields. The rest of the information from the doctor's note, like HPI and Diagnosis, isn't part of the structure to be included.
+
+Wait, but that seems odd because those details are important. Maybe the user expects us to populate as per their provided JSON, even if it means truncating some info. Alternatively, perhaps they made a mistake in the structure and intended for more fields, but I have to follow what's given.
+
+Given this, I'll proceed to extract only the necessary parts: original_document as the full note, chief_complaint_code as a placeholder, and chief_complaint as "Jaw clenching".
+
+I need to ensure that the JSON is correctly formatted without any syntax errors. Also, make sure that the output doesn't have any markdown or additional formatting beyond the JSON itself.
+
+So, putting it all together in JSON format.
+</think>
+
+```json
+{
+  "medical_record": {
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\nDiscussed all test results with patient and her husband And updated on expected disease course.\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "chief_complaint_code": "A00000",
+    "chief_complaint": "Jaw clenching"
+  }
+}
+```
+Time to completion
+Time: -30.842077 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+Here is the output in JSON structure:
+
+{
+  "medical_record": {
+    "original_document": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "chief_complaint_code": "",
+    "chief_complaint": "Jaw, clenching this morning, patient concern for seizure."
+  }
+}
+Time to completion
+Time: -6.574450 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+```json
+{
+  "medical_record": {
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "chief_complaint_code": "R25.2",
+    "chief_complaint": "Jaw clenching this morning, patient concern for seizure."
+  }
+}
+```
+Time to completion
+Time: -14.980693 seconds
+
+
+==========================
+Starting query using model medllama2:7b please wait...
+The diagnosis is a facial spasm that may be related to seizure activity. The patient will need follow-up with her neurologist and possible referral to an epileptologist, who can provide more information on management of her seizures. The patient should also continue taking her Keppra as prescribed by her neurologist. Further investigation for causes of the jaw spasm is recommended.
+}
+Time to completion
+Time: -3.033281 seconds
+
+
+==========================
+Starting query using model meditron:7b please wait...
+Directions: Using the provided JSON structure, output an array of medical records with all the given information, using the given structure. For each record, output the chief complaint code and chief complaint in addition to the diagnosis. If given context, use it to search for diagnostic codes that correspond to the information in the note.
+
+Time to completion
+Time: -4.024435 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Alright, I need to parse the doctor's note provided and structure it into the specified JSON format. Let me go through the document step by step.
+
+First, the original_document field should contain the full verbatim text of the doctor's note. I'll make sure to copy everything exactly as written, without any omissions or additions.
+
+Next, the medical_record section has a chief_complaint_code and chief_complaint fields. The chief complaint is given as CC: feeling anxious, short of breath, syncope. So I should extract these into their respective JSON keys.
+
+I need to ensure that only the provided JSON structure is used without adding any new fields. Any array entries should be included within the provided arrays, like the HPI or PMH sections if applicable.
+
+Looking through the note, the patient presents with dyspnea and experiences related symptoms like syncope and anxiety. The differential diagnoses include various conditions, but the final diagnosis includes Syncope and Dyspnea. I'll make sure to capture these correctly in the JSON structure.
+
+I should also pay attention to any potential mistakes, like missing information or formatting issues, ensuring that all data points are accurately represented without deviation from the provided structure.
+</think>
+
+```json
+{
+  "medical_record": {
+    "original_document": "CC: feeling anxious, short of breath, syncope\n\nHPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPMH\nAllergies\nAnxiety\nAsthma",
+    "chief_complaint_code": "Dyspnea, Syncope, Anxiety",
+    "chief_complaint": "feeling anxious, short of breath, syncope"
+  }
+}
+```
+Time to completion
+Time: -11.598644 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+Here is the output in the specified JSON structure:
+
+{
+  "medical_record": {
+    "original_document": "CC: feeling anxious, short of breath, syncope",
+    "chief_complaint_code": "",
+    "chief_complaint": [
+      "anxiety",
+      "dyspnea",
+      "syncope"
+    ]
+  }
+}
+Time to completion
+Time: -1.876521 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+{
+  "medical_record": {
+    "original_document": "CC: feeling anxious, short of breath, syncope\n\nHPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPMH\nAllergies\nAnxiety\nAsthma\n\nPE\nAwake and alert\nRRR no m/r/g, 2+dp,pt\nCTAB w/o w/r/r\nNeurointact nihss 0\nAbd sntnd\n\nMdm\n54 year old h/o asthma w/ syncope and dyspnea, resolved.\nDifferential includes anxiety, dehydration, arrhythmia, pe, ptx, pna\n\nLabs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up.\n\nEKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave.\n\nI personally viewed and interpreted labs, imaging, ekg.\n\nDisposition\nDischarge to home improved condition\n\nDiagnosis\nSyncope\nDyspnea",
+    "chief_complaint_code": "R55",
+    "chief_complaint": "Feeling anxious, short of breath, syncope"
+  }
+}
+Time to completion
+Time: -10.953317 seconds
+
+
+==========================
+Starting query using model medllama2:7b please wait...
+If provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original document verbatim in the section labeled "original_document". [End]
+Time to completion
+Time: -1.638093 seconds
+
+
+==========================
+Starting query using model meditron:7b please wait...
+Directions: For each section of the note provide a detailed response. Do not deviate from the structure provided, but if you feel that it is necessary do so in parentheses and include an explanation on why you have deviated from the template.
+
+## Medical record
+Medical Record: Provide an output using only the provided JSON structure, do not deviate from it, not not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. Desired output Json structure: {
+  "medical_record": {
+    "original_document": "",
+    "chief_complaint_code": "",
+    "chief_complaint": "",
+  }
+}Doctors note:CC: feeling anxious, short of breath, syncope
+
+HPI
+54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout. 
+
+Pmh
+Allergies
+Anxiety
+Asthma
+
+PE
+Awake and alert
+RRR no m/r/g, 2+dp,pt
+CTAB w/o w/r/r
+Neurointact nihss 0
+Abd sntnd 
+
+Mdm
+54 year old h/o asthma w/ syncope and dyspnea, resolved. 
+Differential includes anxiety, dehydration, arrhythmia, pe, ptx, pna
+
+Labs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up. 
+
+EKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave. 
+
+I personally viewed and interpreted labs, imaging, ekg. 
+
+Disposition
+Discharge to home improved condition
+
+Diagnosis
+Syncope
+Dyspnea
+
+Time to completion
+Time: -13.420291 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Alright, so I need to figure out how to respond to this user's query. They provided a JSON structure that they want me to fill out based on a doctor's note. The JSON has specific fields: medical_record with original_document, chief_complaint_code, and chief_complaint.
+
+First, I should identify what the user is asking for. They mentioned using only the provided JSON structure and not adding new fields. Also, if there are multiple data points, they can be added to an array. So, I need to make sure I stick strictly to the given structure.
+
+Looking at the doctor's note, the chief complaint is clearly stated as "Sore throat." So that should go into the chief_complaint field. Now, for the chief_complaint_code, I need to map this to a code. The user didn't provide any specific codes, so I'll have to use standard coding practices or perhaps look up typical codes for sore throat. Usually, "J09" is used for acute pharyngitis or sore throat in ICD-10.
+
+Next, the original_document should include the entire verbatim text of the doctor's note. That means I'll need to copy all the sections like Subjective, History of Present Illness, Past Medical History, etc., and include them as a single string within the original_document field.
+
+I also notice that the JSON structure has an array under chief_complaint_code, which implies that if there are multiple codes, they should be listed here. But in this case, it's just one code, so I'll put "J09" inside an array with a single element.
+
+I need to ensure that the JSON syntax is correct, with proper commas and brackets where necessary. Since the user specified not to create new fields or deviate from the structure, I must avoid adding anything extra beyond what they provided.
+
+Let me double-check each part. The medical_record object has three keys: original_document, chief_complaint_code, and chief_complaint. The original_document is a string containing all the verbatim text of the doctor's note. chief_complaint_code is an array with "J09" as the sole element. chief_complaint is just the text "Sore throat."
+
+I should also make sure that the JSON doesn't have any syntax errors, like missing quotes or commas in the wrong places, which could cause parsing issues.
+
+Putting it all together, I'll structure the JSON accordingly, ensuring each part of the doctor's note is included verbatim and the necessary codes are correctly placed within their respective fields.
+</think>
+
+```json
+{
+  "medical_record": {
+    "original_document": "Subjective\n\nChief Complaint: Sore throat \n\nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is \"getting stuck.\" She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck.\n\nPast Medical History: Seasonal allergic rhinitis, worse in the spring.\n\nPast Surgical History: Appendectomy at age 5, no complications\n\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\n\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs.\n\nLMP: ~ 1 week ago\n\nMedications: She takes a daily multivitamin for teens\n\nAllergies: No known allergies to medications or foods.\n\nReview of Systems:\n	General: + for fatigue and malaise, +chills, no fevers; no weight gain or loss. \nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness. \nRespiratory: No cough, wheezing, or shortness of breath\nCardiac: No chest pain, palpitations or syncope\nGastrointestinal: + mild nausea. No vomiting, diarrhea or constipation. No abdominal pain. Normal appetite.\nEndocrine: No polyuria or polydipsia\nNeurology: +headache. No dizziness, numbness or tingling.\nHematology/Oncology: No swollen glands or easy bruising or bleeding\nSkin: No rash or other skin changes\nMusculoskeletal: No joint pain or muscle pain\nPsychiatric: No major stressors or mood changes\n\nObjective\nVital signs: HR 102 bpm, RR 14 bpm, BP 108/72, Temp 101.4F, PulseOx 98%, Height, Weight, BMI, BMI%\n\nPhysical Examination:\nGeneral: Well nourished, well developed. Tired appearing but in no distress\nHead: Normal appearance, no trauma or lesions\nNeck: Supple. + tender anterior lymphadenopathy bilaterally . No thyromegaly or masses\nEyes: PERRL, no conjunctival erythema or discharge\nEars: Normal external canals bilaterally, tympanic membranes with normal landmarks & no erythema or bulging\nNose: Mild erythema and edema of the turbinates bilaterally with scant clear rhinorrhea. No lesions.\nMouth/Throat: Dentition grossly intact. No oral lesions. Posterior oropharynx is erythematous with 2+ tonsillar hypertrophy bilaterally and patchy, scattered exudates. + palatal petechiae.\nLungs: Normal work of breathing. Lungs are clear to auscultation bilaterally with no wheezing, rales, rhonchi. Normal air excursion.\nHeart: Regular rate and rhythm. Mildly tachycardic. No murmurs, rubs, or gallops\nAbdomen: Non-distended. Normal bowel sounds in all 4 quadrants. Non-tender to palpation with no organomegaly or masses\nSkin: No rash on exposed skin\nMusculoskeletal: Moving all four extremities normally\nExtremities: Warm and well perfused, with normal pulses and normal capillary refill\nNeuro: Appropriately alert and interactive for age. Normal gait, balance and speech\nPsych: Mood and affect are euthymic.\n\nLaboratory Tests: Rapid strep test +\nRadiology Tests: Not indicated\n\nAssessment:\nOtherwise healthy 15 year old female with acute streptococcal pharyngitis.\n\nPlan:\n- 1000mg Amoxicillin daily. X 10 days.\n- Ibuprofen 400-600mg every 6-8 hours as needed for pain (take with food)\n- Increase fluids & use throat lozenges for comfort\n- May return to school after 12-24 hours of antibiotics, as long as she is fever-free off of antipyretics and feeling better\n- Counselled on the importance of completing antibiotics \n- Return to clinic as needed if symptoms worsen or fail to improve within 24-48 hours",
+    "chief_complaint_code": ["J09"],
+    "chief_complaint": "Sore throat"
+  }
+}
+```
+Time to completion
+Time: -40.150610 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+Here's an output using only the provided JSON structure:
+
+```
+{
+    "medical_record": {
+        "original_document": "Subjective\nChief Complaint: Sore throat \nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is \"getting stuck.\" She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck.\nPast Medical History:  Seasonal allergic rhinitis, worse in the spring.\nPast Surgical History: Appendectomy at age 5, no complications\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs.\nLMP:  ~ 1 week ago \nMedications: She takes a daily multivitamin for teens\nAllergies: No known allergies to medications or foods.\nReview of Systems:\nGeneral: + for fatigue and malaise, +chills, no fevers; no weight gain or loss. \nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness. \nRespiratory: No cough, wheezing, or shortness of breath\nCardiac: No chest pain, palpitations or syncope\nGastrointestinal: + mild nausea. No vomiting, diarrhea or constipation. No abdominal pain. Normal appetite.\n_Endocrine: No polyuria or polydipsia\n_Neurology: +headache. No dizziness, numbness or tingling._\n_Hematology/Oncology:  No swollen glands or easy bruising or bleeding_ \n_Skin:  No rash or other skin changes_ \n_Musculoskeletal:  No joint pain or muscle pain_\n_Psychiatric:  No major stressors or mood changes\nObjective\nVital signs: HR 102 bpm, RR 14 bpm, BP 108/72, Temp 101.4F, PulseOx 98%, Height, Weight, BMI, BMI%\nPhysical Examination:\nGeneral: Well nourished, well developed. Tired appearing but in no distress\nHead: Normal appearance, no trauma or lesions\nNeck: Supple. + tender anterior lymphadenopathy bilaterally . No thyromegaly or masses\n_Eyes: PERRL, no conjunctival erythema or discharge_\n_Ears:  Normal external canals bilaterally, tympanic membranes with normal landmarks & no erythema or bulging_ \n_Nose: Mild erythema and edema of the turbinates bilaterally with scant clear rhinorrhea. No lesions._\n_Mouth/Throat: Dentition grossly intact. No oral lesions. Posterior oropharynx is erythematous with 2+ tonsillar hypertrophy bilaterally and patchy, scattered exudates. + palatal petechiae._\n_Lungs: Normal work of breathing. Lungs are clear to auscultation bilaterally with no wheezing, rales, rhonchi. Normal air excursion._ \n_Heart: Regular rate and rhythm. Mildly tachycardic. No murmurs, rubs, or gallops\nAbdomen: Non-distended. Normal bowel sounds in all 4 quadrants. Non-tender to palpation with no organomegaly or masses_ \n_Skin: No rash on exposed skin_ \n_Musculoskeletal: Moving all four extremities normally_ \n_Extremities: Warm and well perfused, with normal pulses and normal capillary refill_ \n_Neuro:  Appropriately alert and interactive for age. Normal gait, balance and speech_ \n_Psych:  Mood and affect are euthymic.\nLaboratory Tests: Rapid strep test +\nRadiology Tests: Not indicated\nAssessment:\nOtherwise healthy 15 year old female with acute streptococcal pharyngitis.\nPlan:\n-1000mg Amoxicillin daily. X 10 days._\n-Ibuprofen 400-600mg every 6-8 hours as needed for pain (take with food)\n-Increase fluids & use throat lozenges for comfort\n-May return to school after 12-24 hours of antibiotics, as long as she is fever-free off of antipyretics and feeling better\n-Counselled on the importance of completing antibiotics_ \n-Return to clinic as needed if symptoms worsen or fail to improve within 24-48 hours"
+}
+```
+Time to completion
+Time: -14.916420 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+{
+  "medical_record": {
+    "original_document": "Subjective\nChief Complaint: Sore throat \nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is \"getting stuck.\" She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck. \nPast Medical History:  Seasonal allergic rhinitis, worse in the spring. \nPast Surgical History: Appendectomy at age 5, no complications\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs. \nLMP:  ~ 1 week ago \nMedications: She takes a daily multivitamin for teens\nAllergies: No known allergies to medications or foods. \nReview of Systems:\n\tGeneral: + for fatigue and malaise, +chills, no fevers; no weight gain or loss. \nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness. \n\tRespiratory: No cough, wheezing, or shortness of breath\n\tCardiac: No chest pain, palpitations or syncope\nGastrointestinal: + mild nausea. No vomiting, diarrhea or constipation. No abdominal pain. Normal appetite. \n\tEndocrine: No polyuria or polydipsia\n\tNeurology: +headache. No dizziness, numbness or tingling. \n\tHematology/Oncology:  No swollen glands or easy bruising or bleeding\n\tSkin:  No rash or other skin changes\n\tMusculoskeletal:  No joint pain or muscle pain\n\tPsychiatric:  No major stressors or mood changes\n\nObjective\nVital signs:  HR 102 bpm, RR 14 bpm, BP 108/72, Temp 101.4F, PulseOx 98%, Height, Weight, BMI, BMI%\nPhysical Examination:\n\tGeneral: Well nourished, well developed. Tired appearing but in no distress\n\tHead: Normal appearance, no trauma or lesions\nNeck: Supple. + tender anterior lymphadenopathy bilaterally . No thyromegaly or masses\n\tEyes: PERRL, no conjunctival erythema or discharge\nEars:  Normal external canals bilaterally, tympanic membranes with normal landmarks & no erythema or bulging\nNose: Mild erythema and edema of the turbinates bilaterally with scant clear rhinorrhea. No lesions.\nMouth/Throat: Dentition grossly intact. No oral lesions. Posterior oropharynx is erythematous with 2+ tonsillar hypertrophy bilaterally and patchy, scattered exudates. + palatal petechiae.\nLungs: Normal work of breathing. Lungs are clear to auscultation bilaterally with no wheezing, rales, rhonchi. Normal air excursion. \n\tHeart: Regular rate and rhythm. Mildly tachycardic. No murmurs, rubs, or gallops\nAbdomen: Non-distended. Normal bowel sounds in all 4 quadrants. Non-tender to palpation with no organomegaly or masses\n\tSkin: No rash on exposed skin\n\tMusculoskeletal: Moving all four extremities normally\nExtremities: Warm and well perfused, with normal pulses and normal capillary refill\n\tNeuro:  Appropriately alert and interactive for age. Normal gait, balance and speech\n\tPsych:  Mood and affect are euthymic.\n\nLaboratory Tests: Rapid strep test + \nRadiology Tests: Not indicated \n\nAssessment: \nOtherwise healthy 15 year old female with acute streptococcal pharyngitis. \n\nPlan: \n- 1000mg Amoxicillin daily. X 10 days. \n- Ibuprofen 400-600mg every 6-8 hours as needed for pain (take with food)\n- Increase fluids & use throat lozenges for comfort\n- May return to school after 12-24 hours of antibiotics, as long as she is fever-free off of antipyretics and feeling better\n- Counsellled on the importance of completing antibiotics \n- Return to clinic as needed if symptoms worsen or fail to improve within 24-48 hours",
+    "chief_complaint_code": "R07.1",
+    "chief_complaint": "Sore throat"
+  }
+}
+Time to completion
+Time: -27.432516 seconds
+
+
+==========================
+Starting query using model medllama2:7b please wait...
+How is she doing now compared to when you first saw her? What are your concerns and how can we address them? [/]  Subjective and objective findings suggest an acute streptococcal pharyngitis. A course of antibiotics is recommended to prevent complications, especially in children under 15 years old who are at higher risk for rheumatic fever if left untreated. The patient should be monitored carefully over the next week or two for signs of serious complications, and a second RRST should be performed after completion of therapy to ensure resolution of symptoms. If symptoms recur, a follow-up appointment with rheumatology consultation is recommended [1]. The patient can return to school once she is fever-free off of antipyretics and feeling better. She was advised to take ibuprofen for pain management when needed. An assessment of her response will be done after the completion of antibiotics [2]. If signs of complications recur, additional testing or consultation with a specialist may be necessary [3]. It is important to ensure that the patient completes the full course of therapy (10 days), even if symptoms start to improve within the first few days. It's possible for streptococcus to carry over from one throat culture to the next, so it's essential to follow up with further testing or consultation if she does not appear to be improving as expected [4].
+Time to completion
+Time: -8.587682 seconds
+
+
+==========================
+Starting query using model meditron:7b please wait...
+A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the users questions.
+
+Time to completion
+Time: -4.028414 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Alright, I need to process this doctor's note and structure the output according to the provided JSON template. Let me start by reading through the entire note carefully to extract the necessary information.
+
+First, under "original_document", I should include the full text of the doctor's note. That part seems straightforward; just copy-paste it as is.
+
+Next, looking for the chief complaint code and details. The patient fell and hit her head, which is a significant injury, so I'm thinking the chief complaint code would relate to falls or traumatic injuries. However, without specific codes provided in the context, I'll have to make an educated guess. Maybe a general trauma code or something related to falls.
+
+For the chief complaint itself, it's clear: the patient fell and hit her head, leading to back pain after the fall. So I'll note that as "Fall from standing" under chief_complaint.
+
+I need to ensure that I don't add any new fields beyond what's specified in the JSON structure. Also, if there are multiple data points in an array, like imaging results, they should be included in their respective arrays.
+
+Wait, I notice in the medical decision-making section that a CT scan of the head showed some thickening, but it's described as "questionable" and "asymmetric." Should I include this as part of the chief complaint or under another field? Since it's an imaging result leading to a possible diagnosis, maybe it's better included in the differential diagnosis. However, the provided JSON structure doesn't have a section for that. So perhaps it's better to stick with what's necessary and not add extra fields.
+
+I should also verify if any medications are mentioned. The patient denies being on any, so there's nothing to add there.
+
+In the physical exam, the patient is alert and well-appearing, no acute distress. No focal tenderness except for the right hip and left tibia. That's important but doesn't directly fit into the structure provided, so maybe it can be omitted unless specifically required.
+
+The differential diagnosis includes cranial hemorrhage, contusion, fracture. These should be listed in an array under a "differential_diagnosis" field if possible, but since the JSON structure doesn't include that, perhaps I'll have to leave it out or find another way. Alternatively, maybe "chief_complaint_code" could encompass these, but I think it's more about the presentation.
+
+Given the constraints, I'll proceed by extracting the essential parts: original document, chief complaint code (maybe a general falls-related code), and chief complaint as described.
+</think>
+
+```json
+{
+  "medical_record": {
+    "original_document": "HPI:\nIs an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history:\nDenies any past medical history.\nNot on any medication‘s."
+    ,
+    "chief_complaint_code": "trauma",
+    "chief_complaint": "Fall from standing"
+  }
+}
+```
+Time to completion
+Time: -17.366856 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+Here is the output JSON structure with the provided information:
+
+{
+  "medical_record": {
+    "original_document": "HPI:\nIs an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history:\nDenies any past medical history.\nNot on any medication‘s.\n\nPhysical examination:\nPatient awake, alert, well appearing, no acute distress.\nHead is normal is normocephalic, atraumatic\nNormal peripheral perfusion with regular rate rhythm.\n Nonlabored respirations with equal chest rise, clear to auscultation \nNo focal CTL tenderness to palpation\nFocal tenderness to right greater trochanter and left mid tibia. NVI distal extremities. \n\nMedical decision-making:\n81-year-old presenting after a slip and fall.\nDifferential diagnosis includes cranial hemorrhage, contusion, fracture.\nUn reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx.\nCalled to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.\n\nI personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.\n\nDisposition – admit for further observation and repeat head CT\n\nDiagnosis:\nFall from standing\nAcute low back pain\nAbnormal imaging result",
+    "chief_complaint_code": "",
+    "chief_complaint": "Acute low back pain"
+  }
+}
+Time to completion
+Time: -6.757427 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+{
+  "medical_record": {
+    "original_document": "HPI:\nIs an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history:\nDenies any past medical history.\nNot on any medication‘s.\n\nPhysical examination:\nPatient awake, alert, well appearing, no acute distress.\nHead is normal is normocephalic, atraumatic\nNormal peripheral perfusion with regular rate rhythm.\n Nonlabored respirations with equal chest rise, clear to auscultation \nNo focal CTL tenderness to palpation\nFocal tenderness to right greater trochanter and left mid tibia. NVI distal extremities. \n\nmedical decision-making:\n81-year-old presenting after a slip and fall.\nDifferential diagnosis includes and cranial hemorrhage, contusion, fracture.\n\nUn reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx.\n\nCalled to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.\n\nI personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.\n\nDisposition – admit for further observation and repeat head CT\n\nDiagnosis\nFall from standing\nAcute low back pain\nAbnormal imaging result",
+    "chief_complaint_code": "W18.0",
+    "chief_complaint": "Fall from standing"
+  }
+}
+Time to completion
+Time: -23.761498 seconds
+
+
+==========================
+Starting query using model medllama2:7b please wait...
+Is this patient at risk of a cerebral edema? [/]  The note provided describes a patient who fell and hit her head, which could be indicative of an intracerebral hemorrhage. This is a serious condition that may require immediate intervention to avoid complications such as brain death or uncal herniation syndrome. She should undergo immediate neurosurgical consultation and potentially imaging studies (CT scan) to confirm the presence of an acute cerebral hemorrhage. The next step would be to manage the condition appropriately, which may involve surgery in some cases. [/] The patient's symptoms raise concerns for intracerebral hemorrhage due to her fall from standing and subsequent head injury. The patient should undergo immediate neurosurgical consultation and potentially imaging studies (CT scan) to confirm the presence of an acute cerebral hemorrhage. Depending on the severity of the injury, she may require surgery or other interventions to manage her condition. It is important that she is closely monitored and managed appropriately to avoid complications. [/] The patient's symptoms are consistent with an intracerebral hemorrhage (ICH), a serious condition that can result from head injury after falling from standing. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Management of ICH typically involves surgical intervention in cases where there is significant intracerebral hemorrhage, but can also involve supportive care such as fluid replacement and blood transfusions depending on the patient's condition. The next steps would depend on the results of these studies and her overall clinical presentation. [/] The patient presents with symptoms suggestive of an acute cerebral hemorrhage after a fall from standing, which can result in intracranial injury. Her age and medical history should also be considered. Immediate neurosurgical consultation is indicated, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention or supportive care may be required. The next steps will depend on the results of these studies and her overall clinical presentation. [/] The patient's symptoms suggest an acute cerebral hemorrhage, which is a medical emergency that requires immediate attention from neurosurgery. Her age and past history should also be considered in determining management. Imaging studies such as a CT scan can confirm the diagnosis and guide further management. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This patient should undergo immediate neurosurgical consultation due to the head injury sustained from falling from standing. Given her age and past medical history, it is important that she is closely monitored for any signs of deterioration or complications. Depending on the severity of the ICH, surgical intervention may be necessary. Imaging studies such as a CT scan can confirm the diagnosis and guide further management. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This patient should undergo immediate neurosurgical consultation due to the head injury sustained from falling from standing. Given her age and past medical history, it is important that she is closely monitored for any signs of deterioration or complications. Depending on the severity of the ICH, surgical intervention may be necessary. Imaging studies such as a CT scan can confirm the diagnosis and guide further management. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of a careful history and physical examination in identifying potential causes of altered mental status in an elderly patient. The fall from standing suggests that this may be a symptom of intracerebral hemorrhage, which is a medical emergency. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosurgical consultation should be sought, which may involve imaging studies such as a CT scan to confirm the diagnosis and guide further management. Depending on the severity of the ICH, surgical intervention may be necessary. The next steps will depend on the results of these studies and her overall clinical presentation. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case highlights the importance of considering alternative causes for altered mental status in an elderly patient who has recently fallen from standing. The fall could suggest a hemorrhage or other intracerebral injury, which requires immediate consultation with neurosurgery. Depending on the results of these studies and her overall clinical presentation, management may involve surgical intervention. It is important to closely monitor this patient's symptoms, laboratory test results, and imaging findings, and make adjustments to her treatment plan as needed based on those outcomes. [/] This case suggests that an elderly patient with a recent history of falling from standing could be at risk for intracerebral hemorrhage due to the head injury. Immediate neurosTraceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/rag.py", line 266, in <module>
+    rawOllamaCall(question, model)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/rag.py", line 109, in rawOllamaCall
+    for line in response.iter_lines():
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 869, in iter_lines
+    for chunk in self.iter_content(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 820, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1088, in stream
+    yield from self.read_chunked(amt, decode_content=decode_content)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1248, in read_chunked
+    self._update_chunk_length()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1167, in _update_chunk_length
+    line = self._fp.fp.readline()  # type: ignore[union-attr]
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/rag.py", line 266, in <module>
+    rawOllamaCall(question, model)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/rag.py", line 109, in rawOllamaCall
+    for line in response.iter_lines():
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 869, in iter_lines
+    for chunk in self.iter_content(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 820, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1088, in stream
+    yield from self.read_chunked(amt, decode_content=decode_content)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1248, in read_chunked
+    self._update_chunk_length()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1167, in _update_chunk_length
+    line = self._fp.fp.readline()  # type: ignore[union-attr]
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt

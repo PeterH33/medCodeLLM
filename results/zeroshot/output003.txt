@@ -1,0 +1,294 @@
+Research Notes:
+EXPERIMENT ABORTED INFINITE LOOP
+In this run the medlama2:7b model once again entered an infinite loop, the model is being dropped from consideration due to consistent problematic behavior. 
+medllama2 is being replaced with mistral for future tests.
+
+[Tee started] Output also logging to: output003.txt
+Running test using refined instructions, zero shot prompting, and trivial Json output as prompt string.
+Iniital prompt:
+Directions: Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. Desired output Json structure: {
+    "medical_record": {
+        "original_document": "",
+        "diagnostic_code": [],
+        "diagnosis": [],
+    }
+}Doctors note:
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Alright, I'm trying to figure out how to approach this query. The user has provided a doctors note and wants me to process it into a specific JSON structure. Let me break down what needs to be done.
+
+First, the JSON structure they want includes "original_document", which should be the full verbatim of the doctor's note. So I'll need to copy that exactly as given. Then, there's "diagnostic_code" and "diagnosis". The user mentioned using the provided context for diagnostic code lookup, so I should identify any relevant codes from the note.
+
+Looking at the note, under "Diagnosis", it says "Facial spasm." I recall that facial spasm is sometimes coded as R51.9. But I'm not entirely sure if that's the correct code here. Maybe I should check if there are any other possible codes or if there's a more accurate one for this condition.
+
+Wait, the note also mentions that the patient had a prior stroke and seizure history. Could the facial spasm be related to the neurological issues from the stroke? In that case, maybe R51.9 is still appropriate, but perhaps I should include additional notes about the context.
+
+Next, under "diagnosis", the user wants an array of diagnoses. The note only explicitly states "Facial spasm," so I'll make sure to list that as the only diagnosis for now. If there are any other possible considerations mentioned, like muscle spasm or dehydration, they might be added here, but in this case, the primary diagnosis is facial spasm.
+
+I should also ensure that I'm not adding any new fields beyond what's specified in the JSON structure and that all provided data points are included correctly. No need to invent any additional information beyond what's given in the note.
+
+So, putting it together, "original_document" will have the full text of the note, "diagnostic_code" will include R51.9 for facial spasm, and "diagnosis" will be an array with "Facial spasm." I think that covers everything the user is asking for.
+</think>
+
+```json
+{
+    "medical_record": {
+        "original_document": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\nDiscussed all test results with patient and her husband And updated on expected disease course.\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+        "diagnostic_code": ["R51.9"],
+        "diagnosis": ["Facial spasm"]
+    }
+}
+```
+Time to completion
+Time: -24.470342 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "medical_record": {
+        "original_document": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\nHospital medical history\nSeizure\nStroke.\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\nDiscussed all test results with patient and her husband And updated on expected disease course.\nDisposition discharged home.\nDiagnosis\nFacial spasm",
+        "diagnostic_code": [
+            "G24.0",  // Muscle spasm
+            "R47.9"   // Other specified organic conditions affecting speech
+        ],
+        "diagnosis": [
+            "Muscle spasm",
+            "Speech impairment"
+        ]
+    }
+}
+Time to completion
+Time: -8.046267 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+{
+  "medical_record": {
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "diagnostic_code": [
+      "G52.0",
+      "G40.9",
+      "I69.9",
+      "G61.0",
+      "G47.5"
+    ],
+    "diagnosis": [
+      "Facial spasm",
+      "Seizure, unspecified",
+      "Stroke sequelae",
+      "Dysarthria",
+      "Aphasia"
+    ]
+  }
+}
+Time to completion
+Time: -23.805985 seconds
+
+
+==========================
+Starting query using model medllama2:7b please wait...
+Initial Response: A 77-year-old female presents into the emergency department after a transient spasm of her jaw, with history of prior stroke and prior seizures. The patient is currently in no acute distress, examination reveals normal neurological function, and laboratory tests are reassuring. She has been discharged home on observation with follow-up planned for her neurologist outpatient visit.
+Question: What is the most likely diagnosis given the patient’s history? [Answer: Given the patient's prior stroke and seizures, along with the transient spasm of her jaw, a possible diagnosis could be another seizure. However, other causes like muscle spasm or dehydration should also be considered].
+Time to completion
+Time: -6.802844 seconds
+
+
+==========================
+Starting query using model meditron:7b please wait...
+Directions: Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. Desired output Json structure: {
+    "medical_record": {
+        "original_document": "",
+        "diagnostic_code": [],
+        "diagnosis": [
+            {
+                "text": "facial spasm",
+                "concepts": [
+                    {"concept_id": "C0013785", "status": 4, "concept_type": "Disease or Syndrome"},
+                    {"concept_id": "C0069020", "status": 4, "concept_type": "Disorder"},
+                    {"concept_id": "C0353081", "status": 4, "concept_type": "Disease or Syndrome"}
+                ]
+            }
+        ]
+    }Doctors note:Chief complaint.
+Jaw, clenching this morning, patient concern for seizure.
+
+HPI
+This is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.
+
+Hospital medical history
+Seizure
+Stroke.
+
+Physical exam.
+Patient awake alert while appearing in no acute distress.
+Pupils are equal round reactive, extractive muscles are intact.
+Speech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.
+Normal professional, perfusion, regular rate and rhythm.
+Non-labored respirations with equal chest rise.
+
+Medical decision-making.
+Is the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw
+Differential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure
+
+Patient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.
+
+Independent history obtained from EMS, patient’s husband, patient’s aid.
+I’ve independently viewed interpreted the labs, EKG, all imaging.
+
+Discussed all test results with patient and her husband And updated on expected disease course.
+
+Disposition discharged home.
+
+Diagnosis
+Facial spasm
+
+Time to completion
+Time: -20.674675 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+<think>
+Alright, I need to process the doctor's note provided in the query. The task is to create a JSON response using the specified structure. First, I'll look for the original document section and make sure to include the full text there. 
+
+Next, I need to extract any diagnostic codes. Scanning through the note, I see mentions of syncope and dyspnea, which are likely the conditions being diagnosed. However, the provided JSON example didn't include specific codes, so maybe it's expecting just the textual diagnoses.
+
+For the "diagnosis" array, the doctor has listed Syncope and Dyspnea. So those should go into the array. 
+
+I should ensure that I don't add any extra fields or data points beyond what's in the original JSON structure. Also, make sure to follow the exact formatting without any typos.
+
+Finally, I'll compile everything into the correct JSON format as shown, ensuring that all sections are properly filled and no errors are present.
+</think>
+
+```json
+{
+    "medical_record": {
+        "original_document": "CC: feeling anxious, short of breath, syncope\n\nHPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPMH\nAllergies\nAnxiety\nAsthma",
+        "diagnostic_code": [],
+        "diagnosis": ["Syncope", "Dyspnea"]
+    }
+}
+```
+Time to completion
+Time: -9.963303 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "medical_record": {
+        "original_document": "CC: feeling anxious, short of breath, syncope\n\nHPI \n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPmh \nAllergies\nAnxiety\nAsthma\n\nPE \nAwake and alert\nRRR no m/r/g, 2+dp,pt\nCTAB w/o w/r/r\nNeurointact nihss 0\nAbd sntnd \n\nMdm \n54 year old h/o asthma w/ syncope and dyspnea, resolved. \nDifferential includes anxiety, dehydration, arrhythmia, pe, ptx, pna\n\nLabs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up.\n\nEKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave. \n\nI personally viewed and interpreted labs, imaging, ekg. \n\nDisposition \nDischarge to home improved condition\n\nDiagnosis \nSyncope\nDyspnea ",
+        "diagnostic_code": [
+            "284.0", // Syncope
+            "502.91" // Dyspnea
+        ],
+        "diagnosis": [
+            "Syncope",
+            "Dyspnea"
+        ]
+    }
+}
+Time to completion
+Time: -5.823660 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+{
+    "medical_record": {
+        "original_document": "CC: feeling anxious, short of breath, syncope\n\nHPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPmh\nAllergies\nAnxiety\nAsthma\n\nPE\nAwake and alert\nRRR no m/r/g, 2+dp,pt\nCTAB w/o w/r/r\nNeurointact nihss 0\nAbd sntnd\n\nMdm\n54 year old h/o asthma w/ syncope and dyspnea, resolved. \nDifferential includes anxiety, dehydration, arrhythmia, pe, ptx, pna\n\nLabs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up.\n\nEKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave.\n\nI personally viewed and interpreted labs, imaging, ekg.\n\nDisposition\nDischarge to home improved condition\n\nDiagnosis\nSyncope\nDyspnea",
+        "diagnostic_code": [
+            "R55",
+            "R06.02",
+            "J45.909",
+            "F41.9"
+        ],
+        "diagnosis": [
+            "Syncope",
+            "Dyspnea",
+            "Asthma",
+            "Anxiety"
+        ]
+    }
+}
+Time to completion
+Time: -12.543101 seconds
+
+
+==========================
+Starting query using model medllama2:7b please wait...
+Doctor, could you please provide the patient's allergies in a format we can use? [1] (Use the specified formatting for the response.) [2] (Use the specified formatting for the response.) [3] (Use the specified formatting for the response.) [4] (Use the specified formatting for the response.) [5] (Use the specified formatting for the response.) [6] (Use the specified formatting for the response.) [7] (Use the specified formatting for the response.) [8] (Use the specified formatting for the response.) [9] (Use the specified formatting for the response.) [10] (Use the specified formatting for the response.) [11] (Use the specified formatting for the response.) [12] (Use the specified formatting for the response.) [13] (Use the specified formatting for the response.) [14] (Use the specified formatting for the response.) [15] (Use the specified formatting for the response.) [16] (Use the specified formatting for the response.) [17] (Use the specified formatting for the response.) [18] (Use the specified formatting for the response.) [19] (Use the specified formatting for the response.) [20] (Use the specified formatting for the response.) [21] (Use the specified formatting for the response.) [22] (Use the specified formatting for the response.) [23] (Use the specified formatting for the response.) [24] (Use the specified formatting for the response.) [25] (Use the specified formatting for the response.) [26] (Use the specified formatting for the response.) [27] (Use the specified formatting for the response.) [28] (Use the specified formatting for the response.) [29] (Use the specified formatting for the response.) [30] (Use the specified formatting for the response.) [31] (Use the specified formatting for the response.) [32] (Use the specified formatting for the response.) [33] (Use the specified formatting for the response.) [34] (Use the specified formatting for the response.) [35] (Use the specified formatting for the response.) [36] (Use the specified formatting for the response.) [37] (Use the specified formatting for the response.) [38] (Use the specified formatting for the response.) [39] (Use the specified formatting for the response.) [40] (Use the specified formatting for the response.) [41] (Use the specified formatting for the response.) [42] (Use the specified formatting for the response.) [43] (Use the specified formatting for the response.) [44] (Use the specified formatting for the response.) [45] (Use the specified formatting for the response.) [46] (Use the specified formatting for the response.) [47] (Use the specified formatting for the response.) [48] (Use the specified formatting for the response.) [49] (Use the specified formatting for the response.) [50] (Use the specified formatting for the response.)
+[51] (Use the specified formatting for the response.) [52] (Use the specified formatting for the response.) [53] (Use the specified formatting for the response.) [54] (Use the specified formatting for the response.) [55] (Use the specified formatting for the response.) [56] (Use the specified formatting for the response.) [57] (Use the specified formatting for the response.) [58] (Use the specified formatting for the response.) [59] (Use the specified formatting for the response.) [60] (Use the specified formatting for the response.) [61] (Use the specified formatting for the response.) [62] (Use the specified formatting for the response.) [63] (Use the specified formatting for the response.) [64] (Use the specified formatting for the response.) [65] (Use the specified formatting for the response.) [66] (Use the specified formatting for the response.) [67] (Use the specified formatting for the response.) [68] (Use the specified formatting for the response.) [69] (Use the specified formatting for the response.) [70] (Use the specified formatting for the response.) [71] (Use the specified formatting for the response.) [72] (Use the specified formatting for the response.) [73] (Use the specified formatting for the response.) [74] (Use the specified formatting for the response.) [75] (Use the specified formatting for the response.) [76] (Use the specified formatting for the response.) [77] (Use the specified formatting for the response.) [78] (Use the specified formatting for the response.) [79] (Use the specified formatting for the response.) [80] (Use the specified formatting for the response.) [81] (Use the specified formatting for the response.) [82] (Use the specified formatting for the response.) [83] (Use the specified formatting for the response.) [84] (Use the specified formatting for the response.) [85] (Use the specified formatting for the response.) [86] (Use the specified formatting for the response.) [87] (Use the specified formatting for the response.) [88] (Use the specified formatting for the response.) [89] (Use the specified formatting for the response.) [90] (Use the specified formatting for the response.) [91] (Use the specified formatting for the response.) [92] (Use the specified formatting for the response.) [93] (Use the specified formatting for the response.) [94] (Use the specified formatting for the response.) [95] (Use the specified formatting for the response.) [96] (Use the specified formatting for the response.) [97] (Use the specified formatting for the response.) [98] (Use the specified formatting for the response.) [99] (Use the specified formatting for the response.)
+[100] (Use the specified formatting for the response.) [101] (Use the specified formatting for the response.) [102] (Use the specified formatting for the response.) [103] (Use the specified formatting for the response.) [104] (Use the specified formatting for the response.) [105] (Use the specified formatting for the response.) [106] (Use the specified formatting for the response.) [107] (Use the specified formatting for the response.) [108] (Use the specified formatting for the response.) [109] (Use the specified formatting for the response.) [110] (Use the specified formatting for the response.) [111] (Use the specified formatting for the response.) [112] (Use the specified formatting for the response.) [113] (Use the specified formatting for the response.) [114] (Use the specified formatting for the response.) [115] (Use the specified formatting for the response.) [116] (Use the specified formatting for the response.) [117] (Use the specified formatting for the response.) [118] (Use the specified formatting for the response.) [119] (Use the specified formatting for the response.) [120] (Use the specified formatting for the response.) [121] (Use the specified formatting for the response.) [122] (Use the specified formatting for the response.) [123] (Use the specified formatting for the response.) [124] (Use the specified formatting for the response.) [125] (Use the specifiedTraceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 271, in <module>
+    rawOllamaCall(question, model)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 109, in rawOllamaCall
+    for line in response.iter_lines():
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 869, in iter_lines
+    for chunk in self.iter_content(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 820, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1088, in stream
+    yield from self.read_chunked(amt, decode_content=decode_content)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1248, in read_chunked
+    self._update_chunk_length()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1167, in _update_chunk_length
+    line = self._fp.fp.readline()  # type: ignore[union-attr]
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 271, in <module>
+    rawOllamaCall(question, model)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 109, in rawOllamaCall
+    for line in response.iter_lines():
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 869, in iter_lines
+    for chunk in self.iter_content(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/models.py", line 820, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1088, in stream
+    yield from self.read_chunked(amt, decode_content=decode_content)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1248, in read_chunked
+    self._update_chunk_length()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/response.py", line 1167, in _update_chunk_length
+    line = self._fp.fp.readline()  # type: ignore[union-attr]
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt

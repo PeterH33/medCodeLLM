@@ -1,0 +1,39 @@
+This file contains the Diagnostic codes to accompany the medical notes. Codes were identified by practicing medical doctor.
+
+Note 1: Subjective\nChief Complaint: Sore throat...
+streptococcal pharyngitis J02.0
+
+Note 2: HPI:\nIs an 81 year...
+Fall from standing 
+    Z91.81 
+    Most correct and specific: Hisotry of falling W01.0XXA
+acute low back pain
+    M54.50
+abnormal imaging results
+    R93.0
+
+Note 3: Chief complaint trip and fall\n\nHPI 79-year-old...
+fall from standing
+    W01.190A
+Facial contusion
+    S00.83XA
+Dehydration
+    E86.0
+Traumatic rhabdomyolysis
+    T79.6XXA
+Acute kidney injury
+    N17.9
+
+Note 4: Chief complaint.\nJaw, clenching this morning, patient ...
+Facial spasm
+    G51.39
+
+Note 5: CC: feeling anxious, short of breath, syncope\n\nHPI ...
+Syncope
+    R55
+Dyspnea
+    R06.00
+
+NOTE: Doctor comments that they generally just google the codes.
+Insurance companies dont like to bill for Z codes, the SME are not sure why
+Instead of chief complaint I need to work with diagnosis and diagnostic codes
