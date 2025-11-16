@@ -66,3 +66,10 @@ print('Model           | Matched Key           | Similarity | Error Rate')
 print('--------------------------------------------------')
 for model, key, sim, err in results:
     print(f'{model:15} | {key:21} | {sim:.3f}     | {err:.3f}')
+
+
+# Sending the output to excel files for mapping
+import pandas as pd
+
+df = pd.DataFrame(results, columns=["Model", "MatchedKey", "Similarity", "ErrorRate"])
+df.to_excel('results.xlsx', index=False)
