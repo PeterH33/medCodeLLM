@@ -5,8 +5,7 @@ streptococcal pharyngitis J02.0
 
 Note 2: HPI:\nIs an 81 year...
 Fall from standing 
-    Z91.81 
-    Most correct and specific: Hisotry of falling W01.0XXA
+    W01.0XXA  < History of falling is the most likely correct code
 acute low back pain
     M54.50
 abnormal imaging results
