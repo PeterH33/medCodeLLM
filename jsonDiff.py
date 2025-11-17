@@ -1,15 +1,15 @@
 import re
 
-filepath = 'results/zeroshot/output006.txt'
+filepath = 'results/zeroshot/output007.txt'
 
 # Regex to match the JSON block with any content in the fields
 json_pattern = re.compile(
     r'\{\s*'
-    r'"medical_record"\s*:\s*\{\s*'
+    # r'"medical_record"\s*:\s*\{\s*'
     r'"original_document"\s*:\s*(?:".*?"|\[.*?\]|\{.*?\}|[^,]+)\s*,\s*'
-    r'"diagnostic_code"\s*:\s*(?:\[.*?\]|".*?"|\{.*?\}|[^,]+)\s*,\s*'
-    r'"diagnosis"\s*:\s*(?:\[.*?\]|".*?"|\{.*?\}|[^,]+)\s*,?\s*'
-    r'\}\s*'
+    r'"diagnostic_codes"\s*:\s*(?:\[.*?\]|".*?"|\{.*?\}|[^,]+)\s*,\s*'
+    r'"diagnoses"\s*:\s*(?:\[.*?\]|".*?"|\{.*?\}|[^,]+)\s*,?\s*'
+    # r'\}\s*'
     r'\}',
     re.DOTALL
 )

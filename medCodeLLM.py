@@ -10,6 +10,7 @@ from langchain_ollama import ChatOllama
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.docstore.document import Document
+from pydantic import BaseModel
 
 # TODO I would like to not have to do the parse part over and over, some means of storing the vectors and ensuring that nothing changed in the context folder would be beneficial.
 
@@ -100,7 +101,7 @@ def rawOllamaCall(question, model):
 
     prompt = {
         "model": model,
-        "prompt": question
+        "prompt": question,
     }
 
     response = requests.post(url, json=prompt, stream=True)
@@ -113,6 +114,33 @@ def rawOllamaCall(question, model):
                 print(data["response"], end="", flush=True)
             if data.get("done") == 'true':
                 break
+
+def jsonSchemaOllamaCall(question, model, jsonSchema):
+    url = "http://localhost:11434/api/generate"
+
+    prompt = {
+        "model": model,
+        "prompt": question,
+        "format": jsonSchema
+    }
+
+    response = requests.post(url, json=prompt, stream=True)
+
+    collected = ""  # hold streamed JSON text
+
+    for line in response.iter_lines():
+        if not line:
+            continue
+
+        data = json.loads(line.decode("utf-8"))
+
+        if "response" in data:
+            # Print characters exactly as the model streams them
+            print(data["response"], end="", flush=True)
+
+        if data.get("done"):
+            break
+
 
 
 # --Test Queries--
@@ -236,9 +264,15 @@ outputStructureTrivial = '''{
     "medical_record": {
         "original_document": "",
         "diagnostic_code": [],
-        "diagnosis": [],
+        "diagnoses": [],
     }
 }'''
+
+class jsonStructureTrivial(BaseModel):
+    original_document: str
+    diagnostic_codes: list[str]
+    diagnosis: list[str]
+
 
 
 # Instructions to follow the json promt - refine as needed
@@ -251,7 +285,7 @@ tee.startTee(RESULTS_PATH)
 models = ["deepseek-r1:8b", 'llama3.2:latest', 'gpt-oss:20b', 'mistral:7b', 'phi4:14b']
 
 # NOTE EDIT BEFORE RUNS - Ouput document heading 
-print('Running test using refined instructions, zero shot prompting, and trivial Json output as prompt string. First run using mistral model')
+print('Running test using refined instructions, zero shot prompting, and trivial Json schema for Ollama Structured output. First run using mistral model')
 
 print('Iniital prompt:')
 print('Directions: ' + zeroShotPrompt + 'Desired output Json structure: ' + outputStructureTrivial + 'Doctors note:')
@@ -263,17 +297,16 @@ for note in doctorsNotes:
         question = 'Directions: ' + zeroShotPrompt + 'Desired output Json structure: ' + outputStructureTrivial + 'Doctors note:' + note.page_content
 
         print(f'\n\n==========================\nStarting query using model {model} please wait...')
-        start = time.perf_counter()
+        startTime = time.perf_counter()
 
         # askRAGQuestion(question, model)
-        # ragend = time.perf_counter()
+        # rawOllamaCall(question, model)
+        jsonSchemaOllamaCall(question, model, jsonStructureTrivial.model_json_schema())
 
-        rawOllamaCall(question, model)
-        rawend = time.perf_counter()
+        endTime = time.perf_counter()
 
         print('\nTime to completion')
-        # print(f'RAG Time: {ragend-start:.6f} seconds')
-        print(f'Time: {rawend-start:.6f} seconds')
+        print(f'Time: {endTime-startTime:.6f} seconds')
 
 tee.endTee()
 

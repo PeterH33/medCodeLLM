@@ -1,3 +1,7 @@
+Research Notes:
+This is the run used to examine the baseline [Zero-Shot] Performance in the paper.
+Improvements were made to the prompt and to the model selections and performance is noted in the writeup.
+ 
 [Tee started] Output also logging to: output006.txt
 Running test using refined instructions, zero shot prompting, and trivial Json output as prompt string. First run using mistral model
 Iniital prompt:

@@ -1,0 +1,360 @@
+Research Notes:
+This is the first run wtilizing Ollamas strutured output system. This system had a dramatic effect on model performance, with some rather interesting anomolous responses. 
+The first llama3.2 response appeared to be an infinite loop, but for some reason the model had included a very long list of potential codes in the diagnostic codes section.
+gpt-oss:20b appears to refuse to provide output when using this query model, whereas it greatly improves output consistency from other models, perhaps there is a work around, otherwise it seems that gpt-oss will have to simply be dropped from consideration. Given this shift in performance, it might be beneficial to rexamine previously dropped models when an ideal state is approached.
+
+
+[Tee started] Output also logging to: output007.txt
+Running test using refined instructions, zero shot prompting, and trivial Json schema for Ollama Structured output. First run using mistral model
+Iniital prompt:
+Directions: Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. Desired output Json structure: {
+    "medical_record": {
+        "original_document": "",
+        "diagnostic_code": [],
+        "diagnosis": [],
+    }
+}Doctors note:
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+{
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.",
+    "diagnostic_codes": ["R25.0"],
+    "diagnosis": ["facial spasm"]
+}
+															 				
+Time to completion
+Time: 3.415672 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "original_document": "Chief complaint. Jaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "diagnostic_codes": [
+        "G20.0", "><!-- Facial spasm, unspecified cause --><!-- 808.3 --><!-- 307.31 --><!-- G20.0 is not the first code in this case as there are more possible codes below  --><!-- G20.1 --><!-- G20.2 --><!-- G20.8 --><!-- G20.9 --><!-- G21.0 --><!-- G21.8 --><!-- G21.9 --><!-- G23.0 --><!-- G23.2 --><!-- G23.3 --><!-- G23.4 --><!-- G24.0 --><!-- G24.1 --><!-- G25.0 --><!-- G25.8 --><!-- G25.9 --><!-- G27.0 --><!-- G27.1 --><!-- G27.2 --><!-- G27.3 --><!-- G28.0 --><!-- G28.1 --><!-- G28.2 --><!-- G28.3 --!--- G32.0 --><!-- G32.1 --><!-- G32.4 --!--- G39.00 --><!-- G39.01 --><!-- G39.03 --!-- G45.80 --><!-- G45.89 --><!-- G46.20 --!-- G46.30 --!-- G48.8 --!-- G50.90 --!-- G51.0 --!-- G51.1 --!-- G53.00 --!-- G54.10 --!-- G55.6 --!-- G65.6 --!-- G67.3 --!--- G71.4 --><!-- G77.20 --><!-- G77.30 --!--- G80.0 --><!-- G85.8 --!--- G90.8 --!-- G92.2 --!--- G94.82 --!-- G95.5 --!--- G98.83 --!-- G99.6 --!--- G99.89 --!-- G99.9 --!--- K20.0 --><!-- K20.1 --!--- K24.8 --!--- K28.3 --!--- K30.2 --!--- L34.4 --!--- M51.5 --!-- N16.0 --!-- N18.0 --!-- N20.9 --!-- N25.3 --!-- N43.1 --!-- N44.0 --!-- O79.7 --!-- O80.6 --!--- Q56.0 --!--- R06.1 --!--- R11.4 --!-- S16.2 --!--- T10.8 --!--- T12.9 --!--- T15.3 --!-- V09.1 --!--- Z25.5 --!--- Z26.6 --!--- Z28.0 --!--- Z29.0 --!-- X23.4 --!-- X24.2 --!-- Y04.8 --!-- C00.9 --!-- C01.7 --!-- D17.3 --!-- E06.1 --!-- U43.1 --!-- U47.5 --!-- Q56.1 --!-- R02.0 --!--- S11.4 --!-- S15.0 --!-- T10.6 --!-- T13.8 --!--- X25.4 --!--- Y05.2 --!--- Z26.8 --!--- Z32.0 --!-- L34.1 --!--- M51.7 --!-- N16.2 --!-- N18.1 --!-- N20.8 --!-- N24.9 --!-- N43.3 --!-- O79.4 --!--- Q56.3 --!-- R06.2 --!--- T15.6 --!-- V09.5 --!--- Z26.0 --!-- C01.1 --!-- U47.7 --!-- Y04.7 --!-- C00.8 --!-- C02.3 --!-- D17.4 --!-- E06.2 --!-- X23.2 --!-- Y05.3 --!-- L34.5 --!-- M51.9 --!-- N16.5 --!-- N18.1 --!-- N20.6 --!--- N43.2 --!-- O79.5 --!-- Q56.0 --!-- R02.1 --!-- S11.5 --!-- T10.7 --!-- T13.7 --!-- X25.5 --!-- Y05.4 --!-- Z26.9 --!-- Z32.1 --!-- L34.2 --!--- M51.8 --!-- N16.6 --!-- N18.3 --!-- N20.9 --!-- N24.0 --!-- N43.0 --!-- O79.8 --!-- Q56.2 --!-- R06.3 --!-- T15.4 --!-- V09.6 --!-- Z26.7 --!-- C01.5 --!-- U47.1 --!-- Y04.9 --!-- C00.6 --!-- D17.2 --!-- X24.0 --!-- L34.8 --!-- M51.6 --!-- N16.4 --!-- N18.3 --!-- N20.8 --!--- N43.2 --!-- O79.8 --!-- Q56.3 --!-- R06.2 --!-- T15.5 --!-- V09.7 --!-- Z26.9 --!-- C01.1 --!-- U47.4 --!-- Y04.5 --!-- C00.4 --!-- D17.5 --!-- E06.3 --!-- X23.3 --!-- L34.3 --!-- M51.4 --!-- N16.7 --!-- N18.1 --!-- N20.9 --!--- N43.0 --!-- O79.6 --!-- Q56.2 --!-- R02.0 --!-- S11.3 --!-- T10.5 --!-- T13.6 --!-- X25.3 --!-- Y05.1 --!-- Z26.8 --!-- C01.0 --!-- U47.3 --!-- Y04.4 --!-- C00.3 --!-- D17.8 --!-- E06.2 --!-- X24.5 --!-- L34.9 --!-- M51.5 --!-- N16.9 --!--- N43.1 --!-- O79.6 --!-- Q56.0 --!-- R02.1 --!-- S11.4 --!-- T10.7 --!-- T13.8 --!-- X25.2 --!-- Y05.2 --!-- Z26.7 --!-- C01.5 --!-- U47.2 --!-- Y04.6 --!-- C00.7 --!-- D17.9 --!-- E06.1 --!-- X23.4 --!-- L35.0 --!-- M51.3 --!-- N17.0 --!--- N43.2 --!-- O79.8 --!-- Q56.2 --!-- R02.1 --!-- S11.5 --!-- T10.6 --!-- T13.9 --!-- X25.3 --!-- Y05.3 --!-- Z26.8 --!-- C01.4 --!-- U47.4 --!-- Y04.7 --!-- C00.2 --!-- D18.0 --!-- E06.3 --!-- X24.1 --!-- L34.6 --!-- M51.1 --!-- N16.3 --!--- N43.1 --!-- O79.9 --!-- Q56.4 --!-- R02.0 --!-- S11.2 --!-- T10.8 --!-- T13.7 --!-- X25.2 --!-- Y05.0 --!-- Z26.6 --!-- C01.3 --!-- U47.5 --!-- Y04.8 --!-- C00.1 --!-- D17.6 --!-- E06.4 --!-- X23.5 --!-- L34.7 --!-- M51.2 --!-- N16.5 --!--- N43.0 --!-- O79.7 --!-- Q56.3 --!-- R02.1 --!-- S11.3 --!-- T10.9 --!-- T13.8 --!-- X25.1 --!-- Y05.4 --!-- Z26.9 --!-- C01.6 --!-- U47.6 --!-- Y04.9 --!-- C00.0 --!-- D17.7 --!-- E06.5 --!-- X24.3 --!-- L34.8 --!-- M51.1 --!-- N16.6 --!--- N43.2 --!-- O79.8 --!-- Q56.2 --!-- R02.0 --!-- S11.4 --!-- T10.7 --!-- T13.9 --!-- X25.0 --!-- Y05.5 --!-- Z27.0 --!-- C01.8 --!-- U47.7 --!-- Y04.0 --!-- C00.5 --!-- D18.1 --!-- E06.6 --!-- X23.6 --!-- L35.1 --!-- M51.4 --!-- N17.2 --!--- N43.3 --!-- O79.9 --!-- Q56.4 --!-- R02.1 --!-- S11.5 --!-- T10.8 --!-- T13.9 --!-- X25.0 --!-- Y05.1 --!-- Z27.1 --!-- C01.7 --!-- U47.8 --!-- Y04.2 --!-- C00.6 --!-- D18.2 --!-- E06.7 --!-- X24.4 --!-- L34.9 --!-- M51.5 --!-- N16.3 --!--- N43.0 --!-- O79.7 --!-- Q56.3 --!-- R02.1 --!-- S11.6 --!-- T10.9 --!-- T13.8 --!-- X25.1 --!-- Y05.2 --!-- Z27.4 --!-- C01.5 --!-- U47.9 --!-- Y04.3 --!-- C00.7 --!-- D18.3 --!-- E06.8 --!-- X23.7 --!-- L35.0 --!-- M51.2 --!-- N17.1 --!--- N43.2 --!-- O79.8 --!-- Q56.2 --!-- R02.1 --!-- S11.7 --!-- T10.10 --!-- T13.9 --!-- X25.0 --!-- Y05.3 --!-- Z27.5 --!-- C01.6 --!-- U47.0 --!-- Y04.4 --!-- C00.8 --!-- D18.4 --!-- E06.9 --!-- X24.2 --!-- L34.10 --!-- M51.3 --!-- N16.4 --!--- N43.1 --!-- O79.6 --!-- Q56.1 --!-- R02.0 --!-- S11.8 --!-- T10.11 --!-- T13.9 --!-- X25.1 --!-- Y05.4 --!-- Z27.6 --!-- C01.7 --!-- U47.1 --!-- Y04.5 --!-- C00.9 --!-- D18.5 --!-- E07.0 --!-- X24.3 --!-- L34.11 --!-- M51.4 --!-- N16.5 --!--- N43.2 --!-- O79.7 --!-- Q56.2 --!-- R02.1 --!-- S11.9 --!-- T10.12 --!-- T13.9 --!-- X25.0 --!-- Y05.5 --!-- Z27.7 --!-- C01.8 --!-- U47.2 --!-- Y04.6 --!-- C01.0 --!-- D18.6 --!-- E07.1 --!-- X23.5 --!-- L35.0 --!-- M51.5 --!-- N17.0 --!--- N43.3 --!-- O79.8 --!-- Q56.3 --!-- R02.1 --!-- S12.0 --!-- T10.13 --!-- T13.9 --!-- X25.0 --!-- Y05.6 --!-- Z27.8 --!-- C01.9 --!-- U47.3 --!-- Y04.7 --!-- C00.4 --!-- D18.7 --!-- E07.2 --!-- X24.1 --!-- L34.12 --!-- M51.6 --!-- N16.7 --!--- N43.0 --!-- O79.9 --!-- Q56.4 --!-- R02.0 --!-- S11.10 --!-- T10.14 --!-- T13.9 --!-- X25.1 --!-- Y05.7 --!-- Z27.9 --!-- C01.8 --!-- U47.4 --!-- Y04.8 --!-- C00.5 --!-- D18.8 --!-- E07.3 --!-- X23.6 --!-- L35.1 --!-- M51.7 --!-- N17.2 --!--- N43.1 --!-- O79.8 --!-- Q56.2 --!-- R02.0 --!-- S11.9 --!-- T10.15 --!-- T13.9 --!-- X25.0 --!-- Y05.8 --!-- Z28.0 --!-- C01.7 --!-- U47.5 --!-- Y04.9 --!-- C00.6 --!-- D18.9 --!-- E07.4 --!-- X24.2 --!-- L34.13 --!-- M51.1 --!-- N16.8 --!--- N43.0 --!-- O79.7 --!-- Q56.3 --!-- R02.1 --!-- S12.0 --!-- T10.16 --!-- T13.9 --!-- X25.1 --!-- Y05.9 --!-- Z28.1 --!-- C01.8 --!-- U47.6 --!-- Y04.0 --!-- C00.7 --!-- D19.0 --!-- E07.5 --!-- X23.7 --!-- L35.0 --!-- M51.2 --!-- N17.3 --!--- N43.1 --!-- O79.8 --!-- Q56.4 --!-- R02.0 --!-- S11.10 --!-- T10.17 --!-- T13.9 --!-- X25.0 --!-- Y05.10 --!-- Z28.2 --!-- C01.9 --!-- U47.7 --!-- Y04.1 --!-- C00.8 --!-- D19.1 --!-- E07.6 --!-- X24.3 --!-- L34.14 --!-- M51.0 --!-- N16.9 --!--- N43.2 --!-- O79.9 --!-- Q56.5 --!-- R02.1 --!-- S11.11 --!-- T10.18 --!-- T13.9 --!-- X25.1 --!-- Y05.11 --!-- Z28.3 --!-- C01.8 --!-- U47.8 --!-- Y04.2 --!-- C00.9 --!-- D19.2 --!-- E07.7 --!-- X23.6 --!-- L35.0 --!-- M51.1 --!-- N17.4 --!--- N43.3 --!-- O79.8 --!-- Q56.6 --!-- R02.0 --!-- S11.12 --!-- T10.19 --!-- T13.9 --!-- X25.0 --!-- Y05.12 --!-- Z28.4 --!-- C01.7 --!-- U47.9 --!-- Y04.3 --!-- C00.5 --!-- D19.3 --!-- E07.8 --!-- X24.1 --!-- L34.15 --!-- M51.2 --!-- N16.10 --!--- N43.4 --!-- O79.6 --!-- Q56.7 --!-- R02.1 --!-- S11.13 --!-- T10.20 --!-- T13.9 --!-- X25.0 --!-- Y05.13 --!-- Z28.5 --!-- C01.8 --!-- U47.0 --!-- Y04.4 --!-- C00.6 --!-- D19.4 --!-- E07.9 --!-- X23.7 --!-- L35.1 --!-- M51.3 --!-- N17.5 --!--- N43.5 --!-- O79.7 --!-- Q56.8 --!-- R02.0 --!-- S11.14 --!-- T10.21 --!-- T13.9 --!-- X25.1 --!-- Y05.14 --!-- Z28.6 --!-- C01.9 --!-- U47.1 --!-- Y04.5 --!-- C00.7 --!-- D19.5 --!-- E08.0 --!-- X24.2 --!-- L34.16 --!-- M51.4 --!-- N16.11 --!--- N43.6 --!-- O79.8 --!-- Q56.9 --!-- R02.1 --!-- S11.15 --!-- T10.22 --!-- T13.9 --!-- X25.0 --!-- Y05.15 --!-- Z28.7 --!-- C01.8 --!-- U47.2 --!-- Y04.6 --!-- C00.8 --!-- D19.6 --!-- E08.1 --!-- X23.8 --!-- L35.0 --!-- M51.5 --!-- N17.6 --!--- N43.7 --!-- O79.9 --!-- Q57.0 --!-- R02.0 --!-- S11.16 --!-- T10.23 --!-- T13.9 --!-- X25.1 --!-- Y05.16 --!-- Z28.8 --!-- C01.9 --!-- U47.3 --!-- Y04.7 --!-- C00.9 --!-- D19.7 --!-- E08.2 --!-- X24.4 --!-- L34.17 --!-- M51.6 --!-- N16.12 --!--- N43.8 --!-- O79.8 --!-- Q57.1 --!-- R02.0 --!-- S11.17 --!-- T10.24 --!-- T13.9 --!-- X25.0 --!-- Y05.17 --!-- Z28.9 --!-- C01.7 --!-- U47.4 --!-- Y04.8 --!-- C00.5 --!-- D19.8 --!-- E08.3 --!-- X23.9 --!-- L35.1 --!-- M51.7 --!-- N17.7 --!--- N44.0 --!-- O80.0 --!-- R02.0 --!-- S11.18 --!-- T10.25 --!-- T13.9 --!-- X25.1 --!-- Y05.18 --!-- Z29.0 --!-- C01.8 --!-- U47.5 --!-- Y04.9 --!-- C00.6 --!-- D19.9 --!-- E08.4 --!-- X24.2 --!-- L34.18 --!-- M51.8 --!-- N16.13 --!--- N44.1 --!-- O80.1 --!-- R02.0 --!-- S11.19 --!-- T10.26 --!-- T13.9 --!-- X25.0 --!-- Y05.19 --!-- Z29.1 --!-- C01.7 --!-- U47.6 --!-- Y04.0 --!-- C00.7 --!-- D20.0 --!-- E08.5 --!-- X23.7 --!-- L35.1 --!-- M51.9 --!-- N17.8 --!--- N44.2 --!-- O80.2 --!-- R02.0 --!-- S11.20 --!-- T10.27 --!-- T13.9 --!-- X25.1 --!-- Y05.20 --!-- Z29.2 --!-- C01.8 --!-- U47.7 --!-- Y04.1 --!-- C00.8 --!-- D20.1 --!-- E08.6 --!-- X24.3 --!-- L34.19 --!-- M52.0 --!-- N16.14 --!--- N44.3 --!-- O80.3 --!-- R02.0 --!-- S11.21 --!-- T10.28 --!-- T13.9 --!-- X25.0 --!-- Y05.21 --!-- Z29.3 --!-- C01.7 --!-- U47.8 --!-- Y04.2 --!-- C00.9 --!-- D20.2 --!-- E08.7 --!-- X23.8 --!-- L35.1 --!-- M52.1 --!-- N17.9 --!--- N44.4 --!-- O80.4 --!-- R02.0 --!-- S11.22 --!-- T10.29 --!-- T13.9 --!-- X25.1 --!-- Y05.22 --!-- Z29.4 --!-- C01.8 --!-- U47.9 --!-- Y04.3 --!-- C00.5 --!-- D20.3 --!-- E08.8 --!-- X24.2 --!-- L34.20 --!-- M52.2 --!-- N16.15 --!--- N44.5 --!-- O80.5 --!-- R02.0 --!-- S11.23 --!-- T10.30 --!-- T13.9 --!-- X25.0 --!-- Y05.23 --!-- Z29.5 --!-- C01.7 --!-- U48.0 --!-- Y04.4 --!-- C00.6 --!-- D20.4 --!-- E09.0 --!-- X23.9 --!-- L35.1 --!-- M52.3 --!-- N17.10 --!--- N44.6 --!-- O80.6 --!-- R02.0 --!-- S11.24 --!-- T10.31 --!-- T13.9 --!-- X25.1 --!-- Y05.24 --!-- Z29.6 --!-- C01.8 --!-- U48.1 --!-- Y04.5 --!-- C00.7 --!-- D20.5 --!-- E09.1 --!-- X24.3 --!-- L34.21 --!-- M52.4 --!-- N16.16 --!--- N44.7 --!-- O80.7 --!-- R02.0 --!-- S11.25 --!-- T10.32 --!-- T13.9 --!-- X25.0 --!-- Y05.25 --!-- Z29.7 --!-- C01.7 --!-- U48.2 --!-- Y04.6 --!-- C00.8 --!-- D20.6 --!-- E09.2 --!-- X23.8 --!-- L35.1 --!-- M52.5 --!-- N17.11 --!--- N44.8 --!-- O80.8 --!-- R02.0 --!-- S11.26 --!-- T10.33 --!-- T13.9 --!-- X25.1 --!-- Y05.26 --!-- Z29.8 --!-- C01.8 --!-- U48.3 --!-- Y04.7 --!-- C00.9 --!-- D20.7 --!-- E09.3 --!-- X24.2 --!-- L34.22 --!-- M52.6 --!-- N16.17 --!--- N44.9 --!-- O80.9 --!-- R02.0 --!-- S11.27 --!-- T10.34 --!-- T13.9 --!-- X25.0 --!-- Y05.27 --!-- Z29.9 --!-- C01.7 --!-- U48.4 --!-- Y04.8 --!-- C00.5 --!-- D20.8 --!-- E09.4 --!-- X23.9 --!-- L35.1 --!-- M52.7 --!-- N17.12 --!--- N45.0 --!-- O81.0 --!-- R02.0 --!-- S11.28 --!-- T10.35 --!-- T13.9 --!-- X25.1 --!-- Y05.28 --!-- Z30.0 --!-- C01.8 --!-- U48.5 --!-- Y04.9 --!-- C00.6 --!-- D20.9 --!-- E09.5 --!-- X24.3 --!-- L34.23 --!-- M52.8 --!-- N16.18 --!--- N45.1 --!-- O81.1 --!-- R02.0 --!-- S11.29 --!-- T10.36 --!-- T13.9 --!-- X25.0 --!-- Y05.29 --!-- Z30.1 --!-- C01.7 --!-- U48.6 --!-- Y04.0 --!-- C00.7 --!-- D21.0 --!-- E09.6 --!-- X23.8 --!-- L35.1 --!-- M52.9 --!-- N17.13 --!--- N45.2 --!-- O81.2 --!-- R02.0 --!-- S11.30 --!-- T10.37 --!-- T13.9 --!-- X25.1 --!-- Y05.30 --!-- Z30.2 --!-- C01.8 --!-- U48.7 --!-- Y04.1 --!-- C00.8 --!-- D21.1 --!-- E09.7 --!-- X24.4 --!-- L34.24 --!-- M52.10 --!-- N16.19 --!--- N45.3 --!-- O81.3 --!-- R02.0 --!-- S11.31 --!-- T10.38 --!-- T13.9 --!-- X25.0 --!-- Y05.31 --!-- Z30.3 --!-- C01.7 --!-- U48.8 --!-- Y04.2 --!-- C00.9 --!-- D21.2 --!-- E09.8 --!-- X23.9 --!-- L35.1 --!-- M53.0 --!-- N17.14 --!--- N45.4 --!-- O81.4 --!-- R02.0 --!-- S11.32 --!-- T10.39 --!-- T13.9 --!-- X25.1 --!-- Y05.32 --!-- Z30.4 --!-- C01.8 --!-- U48.9 --!-- Y04.3 --!-- C00.5 --!-- D21.3 --!-- E09.9 --!-- X24.2 --!-- L34.25 --!-- M53.1 --!-- N16.20 --!--- N45.5 --!-- O81.5 --!-- R02.0 --!-- S11.33 --!-- T10.40 --!-- T13.9 --!-- X25.0 --!-- Y05.33 --!-- Z30.5 --!-- C01.7 --!-- U49.0 --!-- Y04.4 --!-- C00.6 --!-- D21.4 --!-- E10.0 --!-- X23.8 --!-- L35.1 --!-- M53.2 --!-- N17.15 --!--- N45.6 --!\n\n"
+            ],
+            "diagnosis": [
+                "Asthma",
+                "Pneumonia",
+                "Bronchitis"
+            ]
+        }
+    														
+Time to completion
+Time: 87.744427 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+
+Time to completion
+Time: 2.783901 seconds
+
+
+==========================
+Starting query using model mistral:7b please wait...
+{
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm. Non-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw Differential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependently history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis Facial spasm",
+    "diagnostic_codes": ["R24.809-Facial muscle spasms, unspecified (including torticollis)"],
+    "diagnosis": ["Facial spasm"]
+}
+Time to completion
+Time: 15.183331 seconds
+
+
+==========================
+Starting query using model phi4:14b please wait...
+{
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw.\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "diagnostic_codes": ["G51.0"], "diagnosis": ["Facial spasm"]
+}
+
+Time to completion
+Time: 24.079584 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+{
+    "original_document": "HPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPMH\nAllergies\nAnxiety\nAsthma\n\nPE\nAwake and alert\nRRR no m/r/g, 2+dp,pt\nCTAB w/o w/r/r\nNeurointact nihss 0\nAbd sntnd \n\nMdm\n54 year old h/o asthma w/ syncope and dyspnea, resolved.\nDifferential includes anxiety, dehydration, arrhythmia, pe, ptx, pna\n\nLabs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up.\n\nEKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave.\n\nI personally viewed and interpreted labs, imaging, ekg.\n\nDisposition\nDischarge to home improved condition",
+    "diagnostic_codes": [
+        "Z00.0"
+    ],
+    "diagnosis": []
+}
+
+Time to completion
+Time: 9.783755 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "original_document": "CC: feeling anxious, short of breath, syncope",
+    "diagnostic_codes": [
+        "I00-I09", "><!-- Syncope and Dyspnea Codes --><br>  //Codes from ICD-10  -<br>  // These codes are for the provided information only. <br>  // Always consult a medical professional or refer to official resources for updates and confirmity. </br>   </br>  ",
+    "diagnosis" ],
+
+    "diagnosis": [
+        "Syncope",
+        "Dyspnea"
+    ]
+}
+Time to completion
+Time: 2.844681 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+
+Time to completion
+Time: 9.036769 seconds
+
+
+==========================
+Starting query using model mistral:7b please wait...
+{
+    "original_document": "CC: feeling anxious, short of breath, syncope\nHPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPmh\nAllergies\nAnxiety\nAsthma\n\nPE\nAwake and alert\nRRR no m/r/g, 2+dp,pt\nCTAB w/o w/r/r\nNeurointact nihss 0\nAbd sntnd \n\nMdm\n54 year old h/o asthma w/ syncope and dyspnea, resolved. Differential includes anxiety, dehydration, arrhythmia, pe, ptx, pna\n\nLabs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up.\n\nEKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave.\n\nI personally viewed and interpreted labs, imaging, ekg.\n\nDisposition\nDischarge to home improved condition\n\nDiagnosis\nSyncope\nDyspnea",
+    "diagnostic_codes": ["Syncope", "Dyspnea"],
+    "diagnosis": ["Syncope", "Dyspnea"]
+}
+Time to completion
+Time: 9.998140 seconds
+
+
+==========================
+Starting query using model phi4:14b please wait...
+{
+    "original_document": "CC: feeling anxious, short of breath, syncope\n\nHPI\n54 year old female patient with a history of asthma presents in to the ED for dyspnea. Patient states that she was at her physical therapist and began to feel short of breath so after her appointment she was going to her allergy immunologist. On the way there her e bike battery died and she had to walk the rest of the way. When she got there she felt very lightheaded and short of breath and then passed out. Transported here by EMS without intervention. Normal o2 on room air throughout.\n\nPmh\nAllergies\nAnxiety\nAsthma\n\nPE\nAwake and alert\nRRR no m/r/g, 2+dp,pt\nCTAB w/o w/r/r\nNeurointact nihss 0\nAbd sntnd \n\nMdm\n54 year old h/o asthma w/ syncope and dyspnea, resolved. \nDifferential includes anxiety, dehydration, arrhythmia, pe, ptx, pna\n\nLabs reassuring other than elevated d dimer. CTA obtained and negative. Patient feels improved with no recurrent symptoms. Ambulatory here with no lightheadedness. Offered further observation but declines and prefers discharge with outpatient follow up.\n\nEKG on my interpretation with NSR narrow pr, narrow qrs, normal axis, no ischemic changes, normal qtc, no delta wave, no brugada, no epsilon wave.\n\nI personally viewed and interpreted labs, imaging, ekg. \n\nDisposition\nDischarge to home improved condition\n\nDiagnosis\nSyncope\nDyspnea",
+    "diagnostic_codes": [
+        "R55", "Well-documented ICD-10 code for Syncope and collapse."
+    ],
+    "diagnosis": [
+        "Syncope",
+        "Dyspnea"
+    ]
+}
+Time to completion
+Time: 17.410104 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+{
+    "original_document": "Doctors note:\n\nSubjective\n\nChief Complaint: Sore throat \n\nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is \"getting stuck.\" She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck.\n\nPast Medical History: Seasonal allergic rhinitis, worse in the spring. \n\nPast Surgical History: Appendectomy at age 5, no complications\n\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\n\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs.\n\nLMP: ~ 1 week ago \n\nMedications: She takes a daily multivitamin for teens\n\nAllergies: No known allergies to medications or foods.\n\nReview of Systems:\n\nGeneral: + for fatigue and malaise, +chills, no fevers; no weight gain or loss.\n\nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness.\n\nRespiratory: No cough, wheezing, or shortness of breath",
+    "diagnostic_codes": [
+        "J02.0"
+    ],
+    "diagnosis": [
+        "Acute streptococcal pharyngitis"
+    ]
+}
+ 																			
+Time to completion
+Time: 12.978993 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "original_document": "Subjective\nChief Complaint: Sore throat \nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is \u201cgetting stuck.\u2019 She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck. \nPast Medical History:  Seasonal allergic rhinitis, worse in the spring. \nPast Surgical History: Appendectomy at age 5, no complications\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs. \nLMP:  ~ 1 week ago \nMedications: She takes a daily multivitamin for teens\nAllergies: No known allergies to medications or foods. \nReview of Systems:\nGeneral: + for fatigue and malaise, +chills, no fevers; no weight gain or loss. \nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness. \nRespiratory: No cough, wheezing, or shortness of breath\nCardiac: No chest pain, palpitations or syncope\nGastrointestinal: + mild nausea. No vomiting, diarrhea or constipation. No abdominal pain. Normal appetite. \n_Endocrine: No polyuria or polydipsia\n_Neurology_: +headache. No dizziness, numbness or tingling._\n_Hematology/Oncology_:  No swollen glands or easy bruising or bleeding_\n_Skin:_  No rash or other skin changes_\n_Musculoskeletal_:  No joint pain or muscle pain_\n_Psychiatric_:  No major stressors or mood changes\nObjective\nVital signs:  HR 102 bpm, RR 14 bpm, BP 108/72, Temp 101.4F, PulseOx 98%, Height, Weight, BMI, BMI%\nPhysical Examination:\n_General:_ Well nourished, well developed. Tired appearing but in no distress\n_Head:_ Normal appearance, no trauma or lesions\n_Neck:_ Supple. + tender anterior lymphadenopathy bilaterally . No thyromegaly or masses_\n_Eyes:_ PERRL, no conjunctival erythema or discharge\n_Ears:_  Normal external canals bilaterally, tympanic membranes with normal landmarks & no erythema or bulging\n_Nose:_ Mild erythema and edema of the turbinates bilaterally with scant clear rhinorrhea. No lesions.\n_Mouth/Throat:_ Dentition grossly intact. No oral lesions. Posterior oropharynx is erythematous with 2+ tonsillar hypertrophy bilaterally and patchy, scattered exudates. + palatal petechiae.\n_Lungs:_ Normal work of breathing. Lungs are clear to auscultation bilaterally with no wheezing, rales, rhonchi. Normal air excursion._\n_Heart:_ Regular rate and rhythm. Mildly tachycardic. No murmurs, rubs, or gallops\nAbdomen: Non-distended. Normal bowel sounds in all 4 quadrants. Non-tender to palpation with no organomegaly or masses\n_Skin:_ No rash on exposed skin\n_Musculoskeletal_: Moving all four extremities normally\n_Extremities:_ Warm and well perfused, with normal pulses and normal capillary refill\n_Neuro:_  Appropriately alert and interactive for age. Normal gait, balance and speech\n_Psych:_  Mood and affect are euthymic.\nLaboratory Tests: Rapid strep test +\nRadiology Tests: Not indicated \nAssessment: \nOtherwise healthy 15 year old female with acute streptococcal pharyngitis. \nPlan:\n-1000mg Amoxicillin daily. X 10 days.\n-Ibuprofen 400-600mg every 6-8 hours as needed for pain (take with food)\n-Increase fluids & use throat lozenges for comfort\n-May return to school after 12-24 hours of antibiotics, as long as she is fever-free off of antipyretics and feeling better\n-Counselled on the importance of completing antibiotics \n-Return to clinic as needed if symptoms worsen or fail to improve within 24-48 hours", "diagnostic_codes": [
+        "Sore throat",
+        "Acute streptococcal pharyngitis"
+    ],
+    "diagnosis": [
+        "Acute streptococcal pharyngitis",
+        "Sore throat"
+    ]
+}
+Time to completion
+Time: 15.205448 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+
+Time to completion
+Time: 3.679189 seconds
+
+
+==========================
+Starting query using model mistral:7b please wait...
+{
+    "original_document": "Subjective\nChief Complaint: Sore throat \nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is 'getting stuck.' She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck. \nPast Medical History:  Seasonal allergic rhinitis, worse in the spring. \nPast Surgical History: Appendectomy at age 5, no complications\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs.\nLMP:  ~ 1 week ago \nMedications: She takes a daily multivitamin for teens\nAllergies: No known allergies to medications or foods.\nReview of Systems:\n    General: + for fatigue and malaise, +chills, no fevers; no weight gain or loss. \nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness.\n    Respiratory: No cough, wheezing, or shortness of breath\n    Cardiac: No chest pain, palpitations or syncope\nGastrointestinal: + mild nausea. No vomiting, diarrhea or constipation. No abdominal pain. Normal appetite.\n    Endocrine: No polyuria or polydipsia\n    Neurology: +headache. No dizziness, numbness or tingling.\n    Hematology/Oncology:  No swollen glands or easy bruising or bleeding\n    Skin:  No rash or other skin changes\n    Musculoskeletal:  No joint pain or muscle pain\n    Psychiatric:  No major stressors or mood changes\nObjective\nVital signs:  HR 102 bpm, RR 14 bpm, BP 108/72, Temp 101.4F, PulseOx 98%, Height, Weight, BMI, BMI%\nPhysical Examination:\n    General: Well nourished, well developed. Tired appearing but in no distress\n    Head: Normal appearance, no trauma or lesions\nNeck: Supple. + tender anterior lymphadenopathy bilaterally . No thyromegaly or masses\n    Eyes: PERRL, no conjunctival erythema or discharge\nEars:  Normal external canals bilaterally, tympanic membranes with normal landmarks & no erythema or bulging\nNose: Mild erythema and edema of the turbinates bilaterally with scant clear rhinorrhea. No lesions.\nMouth/Throat: Dentition grossly intact. No oral lesions. Posterior oropharynx is erythematous with 2+ tonsillar hypertrophy bilaterally and patchy, scattered exudates. + palatal petechiae.\nLungs: Normal work of breathing. Lungs are clear to auscultation bilaterally with no wheezing, rales, rhonchi. Normal air excursion.\n    Heart: Regular rate and rhythm. Mildly tachycardic. No murmurs, rubs, or gallops\nAbdomen: Non-distended. Normal bowel sounds in all 4 quadrants. Non-tender to palpation with no organomegaly or masses\n    Skin: No rash on exposed skin\n    Musculoskeletal: Moving all four extremities normally\n    Extremities: Warm and well perfused, with normal pulses and normal capillary refill\n    Neuro:  Appropriately alert and interactive for age. Normal gait, balance and speech\n    Psych:  Mood and affect are euthymic.\nLaboratory Tests: Rapid strep test +\nRadiology Tests: Not indicated \nAssessment:\n    Otherwise healthy 15 year old female with acute streptococcal pharyngitis. \nPlan:\n    -    1000mg Amoxicillin daily. X 10 days.\n    -    Ibuprofen 400-600mg every 6-8 hours as needed for pain (take with food)\n    -    Increase fluids & use throat lozenges for comfort\n    -    May return to school after 12-24 hours of antibiotics, as long as she is fever-free off of antipyretics and feeling better\n    -    Counselled on the importance of completing antibiotics \n    -    Return to clinic as needed if symptoms worsen or fail to improve within 24-48 hours",
+    "diagnostic_codes": ["A05.89", "J01.3"],
+    "diagnosis": ["Acute Streptococcal Pharyngitis", "Tonsillitis"]
+}
+Time to completion
+Time: 30.878093 seconds
+
+
+==========================
+Starting query using model phi4:14b please wait...
+{
+    "original_document": "Doctors note:\nSubjective\nChief Complaint: Sore throat \nHistory of Present illness: 15-year-old female patient presents with 2 days of worsening sore throat. She first noticed the sore throat upon waking yesterday morning and says that the pain has gotten worse despite taking over the counter acetaminophen and using cough drops. Today she has had pain when she swallows and says it almost feels like food is \"getting stuck.\" She has been able to eat and drink, although she can only take soft food. She is not sure whether she has had any fevers, but she did feel chilled last night and again this morning. She denies any swollen glands or difficulty moving her neck. \nPast Medical History:  Seasonal allergic rhinitis, worse in the spring. \nPast Surgical History: Appendectomy at age 5, no complications\nFamily History: Father with type 2 DM, mother with rheumatoid arthritis\nSocial History: She lives with her mother (parents are divorced) and younger sister. She is not sexually active. She does not smoke, vape, or use alcohol, marijuana or other recreational/illicit drugs. \nLMP:  ~ 1 week ago \nMedications: She takes a daily multivitamin for teens\nAllergies: No known allergies to medications or foods. \nReview of Systems:\n\tGeneral: + for fatigue and malaise, +chills, no fevers; no weight gain or loss. \nHEENT: + for sore throat and difficulty swallowing. No congestion or rhinorrhea. No ear pain. No vision changes. No Neck stiffness. \n\tRespiratory: No cough, wheezing, or shortness of breath\n\tCardiac: No chest pain, palpitations or syncope\nGastrointestinal: + mild nausea. No vomiting, diarrhea or constipation. No abdominal pain. Normal appetite. \n\tEndocrine: No polyuria or polydipsia\n\tNeurology: +headache. No dizziness, numbness or tingling. \n\tHematology/Oncology:  No swollen glands or easy bruising or bleeding\n\tSkin:  No rash or other skin changes\n\tMusculoskeletal:  No joint pain or muscle pain\n\tPsychiatric:  No major stressors or mood changes\n\nObjective\nVital signs:  HR 102 bpm, RR 14 bpm, BP 108/72, Temp 101.4F, PulseOx 98%, Height, Weight, BMI, BMI%\nPhysical Examination:\n\tGeneral: Well nourished, well developed. Tired appearing but in no distress\n\tHead: Normal appearance, no trauma or lesions\nNeck: Supple. + tender anterior lymphadenopathy bilaterally . No thyromegaly or masses\n\tEyes: PERRL, no conjunctival erythema or discharge\nEars:  Normal external canals bilaterally, tympanic membranes with normal landmarks & no erythema or bulging\nNose: Mild erythema and edema of the turbinates bilaterally with scant clear rhinorrhea. No lesions.\nMouth/Throat: Dentition grossly intact. No oral lesions. Posterior oropharynx is erythematous with 2+ tonsillar hypertrophy bilaterally and patchy, scattered exudates. + palatal petechiae.\nLungs: Normal work of breathing. Lungs are clear to auscultation bilaterally with no wheezing, rales, rhonchi. Normal air excursion. \n\tHeart: Regular rate and rhythm. Mildly tachycardic. No murmurs, rubs, or gallops\nAbdomen: Non-distended. Normal bowel sounds in all 4 quadrants. Non-tender to palpation with no organomegaly or masses\n\tSkin: No rash on exposed skin\nMusculoskeletal: Moving all four extremities normally\nExtremities: Warm and well perfused, with normal pulses and normal capillary refill\nNeuro:  Appropriately alert and interactive for age. Normal gait, balance and speech\nPsych:  Mood and affect are euthymic.\n\nLaboratory Tests: Rapid strep test + \nRadiology Tests: Not indicated \n\nAssessment:\nOtherwise healthy 15 year old female with acute streptococcal pharyngitis. \n\nPlan:\n- 1000mg Amoxicillin daily. X 10 days.\n- Ibuprofen 400-600mg every 6-8 hours as needed for pain (take with food)\n- Increase fluids & use throat lozenges for comfort\n- May return to school after 12-24 hours of antibiotics, as long as she is fever-free off of antipyretics and feeling better\n- Counseled on the importance of completing antibiotics \n- Return to clinic as needed if symptoms worsen or fail to improve within 24-48 hours",
+    "diagnostic_codes": [
+        "J02.0" , ">//ICD-10-CM Code for streptococcal pharyngitis"
+    ],
+    "diagnosis": [
+        "Acute Streptococcal Pharyngitis"
+    ]
+}
+Time to completion
+Time: 49.834309 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+{
+    "original_document": "Doctors note:HPI:\nIs an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history:\nDenies any past medical history.\nNot on any medication’s."
+    ,
+    "diagnostic_codes": ["I63.9", "M54.5"]
+    ,
+    "diagnosis": [
+        "Fall from standing",
+        "Acute low back pain",
+        "Abnormal imaging result"
+    ]
+}
+
+Time to completion
+Time: 6.885555 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "original_document": "HPI:\nIs an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history:\nDenies any past medical history.\nNot on any medication’s.\n\nPhysical examination:\nPatient awake, alert, well appearing, no acute distress.\nHead is normal is normocephalic, atraumatic\nNormal peripheral perfusion with regular rate rhythm.\nNonlabored respirations with equal chest rise, clear to auscultation \nNo focal CTL tenderness to palpation\nFocal tenderness to right greater trochanter and left mid tibia. NVI distal extremities. \n\nMedical decision-making:\n81-year-old presenting after a slip and fall.\nDifferential diagnosis includes cranial hemorrhage, contusion, fracture.\nUn reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx.\nCalled to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.\nI personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.\n\nDisposition – admit for further observation and repeat head CT\n\nDiagnosis:\nFall from standing\nAcute low back pain\nAbnormal imaging result",
+    "diagnostic_codes": [
+        "S12.0", "And"
+    ],
+    "diagnosis": [
+        "Cranial hemorrhage, contusion, fracture",
+        "Acute low back pain",
+        "Fall from standing"
+    ]
+}
+Time to completion
+Time: 6.941655 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+
+Time to completion
+Time: 3.017557 seconds
+
+
+==========================
+Starting query using model mistral:7b please wait...
+{
+    "original_document": "HPI: Is an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history: Denies any past medical history. Not on any medication‘s.\n\nPhysical examination: Patient awake, alert, well appearing, no acute distress. Head is normal is normocephalic, atraumatic Normal peripheral perfusion with regular rate rhythm. Nonlabored respirations with equal chest rise, clear to auscultation No focal CTL tenderness to palpation Focal tenderness to right greater trochanter and left mid tibia. NVI distal extremities.\n\nmedical decision-making: 81-year-old presenting after a slip and fall. Differential diagnosis includes and cranial hemorrhage, contusion, fracture.\n\nUn reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx. Called to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.\n\nI personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.\n\nDisposition – admit for further observation and repeat head CT Diagnosis Fall from standing Acute low back pain Abnormal imaging result",
+    "diagnostic_codes": ["S09.XXXA - Unspecified injury of hip and femur", "S31.22XA - Contusion of lower back, unspecified"],
+    "diagnosis": ["Fall from standing", "Acute low back pain", "Abnormal imaging result"]
+}
+Time to completion
+Time: 12.723119 seconds
+
+
+==========================
+Starting query using model phi4:14b please wait...
+{
+    "original_document": "HPI: Is an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.\n\nPast medical history: Denies any past medical history. Not on any medication‘s.\n\nPhysical examination: Patient awake, alert, well appearing, no acute distress. Head is normal is normocephalic, atraumatic Normal peripheral perfusion with regular rate rhythm. Nonlabored respirations with equal chest rise, clear to auscultation No focal CTL tenderness to palpation Focal tenderness to right greater trochanter and left mid tibia. NVI distal extremities.\n\nmedical decision-making: 81-year-old presenting after a slip and fall. Differential diagnosis includes and cranial hemorrhage, contusion, fracture.\n\nUn reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx.\n\nCalled to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.\n\nI personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.\n\nDisposition – admit for further observation and repeat head CT\n\nDiagnosis Fall from standing Acute low back pain Abnormal imaging result",
+    "diagnostic_codes": [
+        "W18.30XA - Fall on same level, unspecified, initial encounter", ">// Diagnostic code for fall from standing with no specification of the body part affected.",
+        "M54.5 - Low back pain", ">// ICD-10 code for acute low back pain as per the provided doctor's note.",
+        "R93.4 - Abnormal results of examination of brain imaging" ] , "diagnosis": [
+        "Fall from standing",
+        "Acute low back pain",
+        "Abnormal imaging result"
+    ]
+}
+Time to completion
+Time: 23.750409 seconds
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+{
+  "original_document": "79-year-old female presents into the emergency department after a slip and fall that occurred last night while she was trying to get ready for bed. Patient states that she has a history of peripheral neuropathy and she simply tripped on her foot and fell down to hit her face on the dresser. She states she was unable to get up from the ground and get into bed or a couch and spend the night on the ground. Denies any loss of consciousness. She states that she did not allow our housemate to call 911 last night but this morning she was still unable to get up so they called today. Only pain at this time she reports to be in her low back. Denies any loss of consciousness. Any history of anticoagulation or prior head injury.",
+  "diagnostic_codes": [
+    "I",
+    "E",
+    "A"
+  ],
+  "diagnosis": [
+    "fall from standing",
+    "facial contusion",
+    "decomposition of tissue (traumatic rhabdomyolysis)",
+    "acute kidney injury"
+  ]
+}
+  				  												
+Time to completion
+Time: 7.477762 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "original_document": "Chief complaint trip and fall. HPI 79-year-old female presents into the emergency department after a slip and fall that occurred last night while she was trying to get ready for bed. Patient states that she has a history of peripheral neuropathy and she simply tripped on her foot and fell down to hit her face on the dresser. She states she was unable to get up from the ground and get into bed or a couch and spend the night on the ground. Denies any loss of consciousness. She states that she did not allow our housemate to call 911 last night but this morning she was still unable to get up so they called today. Only pain at this time she reports to be in her low back. Denies any loss of consciousness. Any history of anticoagulation or prior head injury.\nPast medical history includes hypertension, hyperlipidemia, peripheral neuropathy, vitamin D deficiency, diabetes.\nPhysical exam.\nPatient awake alert, oriented in no acute distress.\nExtract clear muscles are intact with no diplopia.\nThere is an abrasion above the left orbit and there is ecchymosis surrounding the left orbit and tracking down the left side of the face with associated infra orbital tenderness.\nTolerate full range of motion in the neck with no midline, cervical thoracic or lumbar tenderness, palpation step off or deformity.\nNormal peripheral perfusion.\nNon-labored, respirations with equal bilateral chest rise\nMedical decision-making.\n79 year-old female, presenting into the emergency department after slip and fall at home last night.\nDifferential diagnosis includes intracranial hemorrhage, fracture, contusion, acute ischemic (AI) stroke, dehydration, non-exertional rhabdomyolysis\nImaging is significant for no acute traumatic injuries, patient feels improved after IV hydration, her creatinine is slightly elevated, CK is slightly elevated. Patient is reserved to hear in the emergency department for four hours and remains hemodynamically stable.\nBasic metabolic panel and creatinine kinase is repeated And both are slightly improved after hydration. i've offered the patient admission for further ongoing hydration and trending of labs. However, she declines at this time and prefers discharge with close outpatient follow up.\nAdditional history obtained from EMS.\nI have personally viewed and interpreted the labs, imaging, EKG and discussed all test results with the patient and updated her on the expected disease course.\nDisposition discharged to home.\nDiagnosis \nfall from standing\nFacial contusion\nDehydration.\nTraumatic rhabdomyolysis.\nAcute kidney injury",
+    "diagnostic_codes": [
+        "810.0", "># fall from standing (E900-E999, accidental injury in sports and rec., fall, non-motorized land vehicle, other specified site of injury),  # 810.0 - Fall, without mention of a strike object, at home or in the community.  # NOS (Not Otherwise Specified) codes are used for diagnoses that do not fit into any specific code category. This information will be added automatically based on your input. For now we have the following diagnostic codes from original doctor's note:  # fall from standing,  # Facial contusion,  # Dehydration.  # Traumatic rhabdomyolysis.,  # Acute kidney injury.  # 800 - Injury, unspecified part of body (E900-E999),  # 850 - Injuries by external force, accidental injuries, sports and recreational land vehicle accidents, other specified site of injury (E900-E999)   ",
+        "850.0", "># facial contusion (E850-E859, external or internal wound, contusion or abrasion of face or neck), # E850 - Contusions of face, neck, and throat, # NOS (Not Otherwise Specified) codes are used for diagnoses that do not fit into any specific code category. This information will be added automatically based on your input. For now we have the following diagnostic codes from original doctor's note:  # facial contusion.,  # Dehydration.  # Traumatic rhabdomyolysis.,  # Acute kidney injury.  # E850 - Contusions of face, neck, and throat  # 850.0- E850 - Contusions of face, neck, and throat   ",
+        "997.0", "># dehydration (E999-E9999),  # E999 - Dehydration (decreased body fluid volume)   ",
+        "850.8", "># traumatic rhabdomyolysis (E850-E859, external or internal wound, contusion or abrasion of face or neck), # E850 - Contusions of face, neck, and throat,  # E850.8 - Rhabdomyolysis of muscle (including skeletal muscle), # NOS (Not Otherwise Specified) codes are used for diagnoses that do not fit into any specific code category. This information will be added automatically based on your input. For now we have the following diagnostic codes from original doctor's note:  # Dehydration.  # Traumatic rhabdomyolysis.,  # Acute kidney injury.  # E850 - Contusions of face, neck, and throat   ",
+        "586.0", "># acute kidney injury (E586-E589, kidney failure due to decreased blood flow or nephrotoxins)   "
+    ],
+    "diagnosis": [
+        "Fall from standing",
+        "Facial contusion",
+        "Dehydration",
+        "Traumatic rhabdomyolysis",
+        "Acute kidney injury"
+    ]
+}
+Time to completion
+Time: 15.411567 seconds
+
+
+==========================
+Starting query using model gpt-oss:20b please wait...
+
+Time to completion
+Time: 3.630521 seconds
+
+
+==========================
+Starting query using model mistral:7b please wait...
+{
+    "original_document": "Chief complaint trip and fall\n\nHPI 79-year-old female presents into the emergency department after a slip and fall that occurred last night while she was trying to get ready for bed. Patient states that she has a history of peripheral neuropathy and she simply tripped on her foot and fell down to hit her face on the dresser. She states she was unable to get up from the ground and get into bed or a couch and spend the night on the ground. Denies any loss of consciousness. She states that she did not allow our housemate to call 911 last night but this morning she was still unable to get up so they called today. Only pain at this time she reports to be in her low back. Denies any loss of consciousness. Any history of anticoagulation or prior head injury.\n\nPast medical history includes hypertension, hyperlipidemia, peripheral neuropathy, vitamin D deficiency, diabetes.\n\nPhysical exam.\nPatient awake alert, oriented in no acute distress.\nExtract clear muscles are intact with no diplopia. There is an abrasion above the left orbit and there is ecchymosis surrounding the left orbit and tracking down the left side of the face with associated infra orbital tenderness.\nTolerate full range of motion in the neck with no midline, cervical thoracic or lumbar tenderness, palpation step off or deformity.\nNormal peripheral perfusion.\nNon-labored, respirations with equal bilateral chest rise\n\nMedical decision-making\n79 year-old female, presenting into the emergency department after slip and fall at home last night.\nDifferential diagnosis includes intracranial, hemorrhage, fracture, contusion, AI, dehydration, non-exertional rhabdomyolysis\nImaging is significant for no acute traumatic injuries, patient feels improved after IV hydration, her creatinine is slightly elevated, CK is slightly elevated. Patient is reserved to hear in the emergency department for four hours and remains hemodynamically stable. Basic metabolic panel and creatinine kinase is repeated And both are slightly improved after hydration. i’ve offered the patient admission for further ongoing hydration and trending of labs. However, she declines at this time and prefers discharge with close outpatient follow up.\nAdditional history obtained from EMS.\nI have personally viewed and interpreted the labs, imaging, EKG and discussed all test results with the patient and updated her on the expected disease course.\nDisposition discharged to home.\n\nDiagnosis fall from standing Facial contusion Dehydration. Traumatic rhabdomyolysis. Acute kidney injury",
+    "diagnostic_codes": ["S09.XXXA - Unspecified fall as the cause of an injury or poisoning", "S06.12XA - Contusion of jaw and face (including nose) with open wound", "Z86.039 - Dehydration due to other specified conditions", "R54.XXXA - Unspecified rhabdomyolysis"],
+    "diagnosis": ["Fall from standing", "Facial contusion", "Dehydration", "Traumatic rhabdomyolysis"]
+}
+Time to completion
+Time: 16.859724 seconds
+
+
+==========================
+Starting query using model phi4:14b please wait...
+{
+    "original_document": "Chief complaint trip and fall\n\nHPI 79-year-old female presents into the emergency department after a slip and fall that occurred last night while she was trying to get ready for bed. Patient states that she has a history of peripheral neuropathy and she simply tripped on her foot and fell down to hit her face on the dresser. She states she was unable to get up from the ground and get into bed or a couch and spend the night on the ground. Denies any loss of consciousness. She states that she did not allow our housemate to call 911 last night but this morning she was still unable to get up so they called today. Only pain at this time she reports to be in her low back. Denies any loss of consciousness. Any history of anticoagulation or prior head injury.\n\nPast medical history includes hypertension, hyperlipidemia, peripheral neuropathy, vitamin D, deficiency, diabetes.\n\nPhysical exam.\nPatient awake alert, oriented in no acute distress.\nExtract clear muscles are intact with no diplopia.\nThere is an abrasion above the left orbit and there is ecchymosis surrounding the left orbit and tracking down the left side of the face with associated infra orbital tenderness.\nTolerate full range of motion in the neck with no midline, cervical thoracic or lumbar tenderness, palpation step off or deformity.\nNormal peripheral perfusion.\nNon-labored, respirations with equal bilateral chest rise\n\nMedical decision-making\n79 year-old female, presenting into the emergency department after slip and fall at home last night.\nDifferential diagnosis includes intracranial, hemorrhage, fracture, contusion, AI, dehydration, non-exertional rhabdomyolysis\n\nImaging is significant for no acute traumatic injuries, patient feels improved after IV hydration, her creatinine is slightly elevated, CK is slightly elevated. Patient is reserved to hear in the emergency department for four hours and remains hemodynamically stable. Basic metabolic panel and creatinine kinase is repeated And both are slightly improved after hydration. i’ve offered the patient admission for further ongoing hydration and trending of labs. However, she declines at this time and prefers discharge with close outpatient follow up.\n\nAdditional history obtained from EMS.\nI have personally viewed and interpreted the labs, imaging, EKG and discussed all test results with the patient and updated her on the expected disease course.\n\nDisposition discharged to home.\n\nDiagnosis \nfall from standing\nFacial contusion\nDehydration.\nTraumatic rhabdomyolysis.\nAcute kidney injury",
+    "diagnostic_codes": [
+        "W18.30XA - Fall on same level, unspecified, initial encounter",
+        "S01.84XA - Contusion of eyelid and periocular area, except nose, initial encounter",
+        "E86.0 - Dehydration",
+        "M62.82 - Rhabdomyolysis",
+        "N17.9 - Acute kidney failure, unspecified"
+    ],
+    "diagnosis": [
+        "Fall from standing",
+        "Facial contusion",
+        "Dehydration",
+        "Traumatic rhabdomyolysis",
+        "Acute kidney injury"
+    ]
+}
+Time to completion
+Time: 28.605400 seconds
