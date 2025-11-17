@@ -273,7 +273,7 @@ for note in doctorsNotes:
 
         print('\nTime to completion')
         # print(f'RAG Time: {ragend-start:.6f} seconds')
-        print(f'Time: {start-rawend:.6f} seconds')
+        print(f'Time: {rawend-start:.6f} seconds')
 
 tee.endTee()
 
