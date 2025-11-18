@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 
-targetFile = 'results/zeroshot/output006.txt'
+targetFile = 'results/zeroshot/output007.txt'
 with open(targetFile) as f:
     text = f.read()
 

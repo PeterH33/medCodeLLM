@@ -1,6 +1,6 @@
 import re
 
-filepath = 'results/zeroshot/output007.txt'
+filepath = 'results/zeroshot/output009.txt'
 
 # Regex to match the JSON block with any content in the fields
 json_pattern = re.compile(

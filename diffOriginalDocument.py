@@ -10,14 +10,7 @@ import re
 import os
 
 
-while True:
-    targetFile = input("Enter the filename inside 'results/' (e.g., zeroshot/output001.txt): ").strip()
-    fullPath = os.path.join("results", targetFile)
-
-    if os.path.isfile(fullPath):
-        break
-    else:
-        print(f"ERROR: File not found: {fullPath}\nPlease try again.\n")
+targetFile = 'results/zeroshot/output009.txt'
 
 
 # Load the doctors notes which function as keys
@@ -25,7 +18,7 @@ keyFiles = sorted(glob.glob('doctorNotes/*.txt'))
 keys = {fn: open(fn).read() for fn in keyFiles}
 
 # Load target outputxxx.txt file
-with open('results/' + targetFile) as f:
+with open(targetFile, 'r') as f:
     targetText = f.read()
 
 modelPattern = r'Starting query using model\s+(.*?)\s+please wait\.\.\.(.*?)Time:'
@@ -72,4 +65,4 @@ for model, key, sim, err in results:
 import pandas as pd
 
 df = pd.DataFrame(results, columns=["Model", "MatchedKey", "Similarity", "ErrorRate"])
-df.to_excel('medRecordDiffresults.xlsx', index=False)
+df.to_excel('originalRecordDiffresults.xlsx', index=False)

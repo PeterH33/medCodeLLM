@@ -271,37 +271,43 @@ outputStructureTrivial = '''{
 class jsonStructureTrivial(BaseModel):
     original_document: str
     diagnostic_codes: list[str]
-    diagnosis: list[str]
-
+    diagnoses: list[str]
 
 
 # Instructions to follow the json promt - refine as needed
-zeroShotPrompt = 'Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. '
+
+with open('prompts/instructionPrompt.txt', 'r') as f:
+    instructionPrompt = f.read()
+
+with open('prompts/fewShotPrompt.txt', 'r') as f:
+    fewShotPrompt = f.read()
 
 RESULTS_PATH = './results/zeroshot'
 
 tee.startTee(RESULTS_PATH)
 
-models = ["deepseek-r1:8b", 'llama3.2:latest', 'gpt-oss:20b', 'mistral:7b', 'phi4:14b']
+models = ["deepseek-r1:8b", 'llama3.2:latest', 'gemma3:270m', 'mistral:7b', 'phi4:14b']
 
 # NOTE EDIT BEFORE RUNS - Ouput document heading 
-print('Running test using refined instructions, zero shot prompting, and trivial Json schema for Ollama Structured output. First run using mistral model')
+print('Running test using few-shot prompting, and trivial Json schema for Ollama Structured output. gpt-oss replaced with gemma3:270m')
 
 print('Iniital prompt:')
-print('Directions: ' + zeroShotPrompt + 'Desired output Json structure: ' + outputStructureTrivial + 'Doctors note:')
+print('Directions: ' + instructionPrompt + ' Few shot prompt: ' + fewShotPrompt + 'Doctors note: <Variable>')
 
 
 for note in doctorsNotes:
     for model in models:
     
-        question = 'Directions: ' + zeroShotPrompt + 'Desired output Json structure: ' + outputStructureTrivial + 'Doctors note:' + note.page_content
+        question = 'Directions: ' + instructionPrompt + 'Desired output Json structure: ' + outputStructureTrivial + 'Doctors note:' + note.page_content
+        fewShotQuestion = 'Directions: ' + instructionPrompt + fewShotPrompt + 'Doctors note:' + note.page_content
 
         print(f'\n\n==========================\nStarting query using model {model} please wait...')
         startTime = time.perf_counter()
 
         # askRAGQuestion(question, model)
         # rawOllamaCall(question, model)
-        jsonSchemaOllamaCall(question, model, jsonStructureTrivial.model_json_schema())
+        # jsonSchemaOllamaCall(question, model, jsonStructureTrivial.model_json_schema())
+        jsonSchemaOllamaCall(fewShotQuestion, model, jsonStructureTrivial.model_json_schema())
 
         endTime = time.perf_counter()
 

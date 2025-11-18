@@ -8,7 +8,7 @@ Fall from standing
     W01.0XXA  < History of falling is the most likely correct code
 acute low back pain
     M54.50
-abnormal imaging results
+abnormal imaging result
     R93.0
 
 Note 3: Chief complaint trip and fall\n\nHPI 79-year-old...

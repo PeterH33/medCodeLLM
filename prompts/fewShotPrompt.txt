@@ -1,0 +1,149 @@
+When provided with this doctors note:
+Chief complaint.
+Jaw, clenching this morning, patient concern for seizure.
+
+HPI
+This is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.
+
+Hospital medical history
+Seizure
+Stroke.
+
+Physical exam.
+Patient awake alert while appearing in no acute distress.
+Pupils are equal round reactive, extractive muscles are intact.
+Speech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.
+Normal professional, perfusion, regular rate and rhythm.
+Non-labored respirations with equal chest rise.
+
+Medical decision-making.
+Is the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw
+Differential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure
+
+Patient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.
+
+Independent history obtained from EMS, patient’s husband, patient’s aid.
+I’ve independently viewed interpreted the labs, EKG, all imaging.
+
+Discussed all test results with patient and her husband And updated on expected disease course.
+
+Disposition discharged home.
+
+Diagnosis
+Facial spasm
+
+The ouput should be:
+{
+    "original_document": "Chief complaint.
+        Jaw, clenching this morning, patient concern for seizure.
+
+        HPI
+        This is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.
+
+        Hospital medical history
+        Seizure
+        Stroke.
+
+        Physical exam.
+        Patient awake alert while appearing in no acute distress.
+        Pupils are equal round reactive, extractive muscles are intact.
+        Speech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.
+        Normal professional, perfusion, regular rate and rhythm.
+        Non-labored respirations with equal chest rise.
+
+        Medical decision-making.
+        Is the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw
+        Differential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure
+
+        Patient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.
+
+        Independent history obtained from EMS, patient’s husband, patient’s aid.
+        I’ve independently viewed interpreted the labs, EKG, all imaging.
+
+        Discussed all test results with patient and her husband And updated on expected disease course.
+
+        Disposition discharged home.
+
+        Diagnosis
+        Facial spasm",
+    "diagnostic_codes": ["G51.39"],
+    "diagnoses": ["Facial spasm"]
+}
+
+When provided with a doctor's note like this:
+HPI:
+Is an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.
+
+Past medical history:
+Denies any past medical history.
+Not on any medication‘s.
+
+Physical examination:
+Patient awake, alert, well appearing, no acute distress.
+Head is normal is normocephalic, atraumatic
+Normal peripheral perfusion with regular rate rhythm.
+ Nonlabored respirations with equal chest rise, clear to auscultation 
+No focal CTL tenderness to palpation
+Focal tenderness to right greater trochanter and left mid tibia. NVI distal extremities. 
+
+medical decision-making:
+81-year-old presenting after a slip and fall.
+Differential diagnosis includes and cranial hemorrhage, contusion, fracture.
+
+Un reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx.
+
+Called to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.
+
+I personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.
+
+Disposition – admit for further observation and repeat head CT
+
+Diagnosis
+Fall from standing
+Acute low back pain
+Abnormal imaging result
+
+The output should be:
+{
+    "original_document": "HPI:
+        Is an 81 year-old female presenting into the emergency department after having a slip and fall at home. Patient states that she was on her way to the bathroom, she slipped on the bathroom floor and fell and hit her head. She says that she’s been having back pain for the past one week and it’s worsened at this time. The pain is constant, non-radiating. Pain worsens with any attempted movement. Denies any bladder incontinence. No loss of conscience. Not any anticoagulants. Denies any chest pain or shortness of breath.
+
+        Past medical history:
+        Denies any past medical history.
+        Not on any medication‘s.
+
+        Physical examination:
+        Patient awake, alert, well appearing, no acute distress.
+        Head is normal is normocephalic, atraumatic
+        Normal peripheral perfusion with regular rate rhythm.
+        Nonlabored respirations with equal chest rise, clear to auscultation 
+        No focal CTL tenderness to palpation
+        Focal tenderness to right greater trochanter and left mid tibia. NVI distal extremities. 
+
+        medical decision-making:
+        81-year-old presenting after a slip and fall.
+        Differential diagnosis includes and cranial hemorrhage, contusion, fracture.
+
+        Un reassessment patient remains hemodynamically stable and with non-focal neurologic exam. Plane films of the right hip and the left leg are negative for acute fracture, CT scan of the cervical spine, and the lumbar spine are negative for acute fracture or other acute traumatic injury. CT of the head shows a questionable asymmetric thickening of the inferior falx.
+
+        Called to discuss with on-call neurosurgeon, in agreement with admission to our facility, repeat had CT at six hours. Patient and family are updated on all results and comfort a plan of care. Called and discussed with hospitalist for admission.
+
+        I personally viewed an interpreted patient’s EKG, chest, x-ray, plain films, CT imaging, laboratory results.
+
+        Disposition – admit for further observation and repeat head CT
+
+        Diagnosis
+        Fall from standing
+        Acute low back pain
+        Abnormal imaging result",
+    "diagnostic_codes": [
+        "W01.0XXA",
+        "M54.50",
+        "R93.0"
+        ],
+    "diagnoses": [
+        "Fall from standing",
+        "Acute low back pain",
+        "Abnormal imaging result"
+        ]
+}
