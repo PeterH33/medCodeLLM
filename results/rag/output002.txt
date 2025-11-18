@@ -1,0 +1,134 @@
+[Tee started] Output also logging to: output002.txt
+Running test using few-shot prompting, and trivial Json schema for Ollama Structured output. gpt-oss replaced with gemma3:270m
+Iniital prompt:
+Directions: Provide a response using the provided JSON structure, do not deviate from it, do not create new fields, any time that there is an array multiple datapoints can be added to the array. Use the following JSON structure and if provided context use it for diagnostic code lookup, to process and output the information contained in the doctors note. Include the full original doctors note verbatum in the section labeled original_document. RAG Context Doctors note: <Variable>
+
+
+==========================
+Starting query using model deepseek-r1:8b please wait...
+/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py:101: LangChainDeprecationWarning: The method `BaseRetriever.get_relevant_documents` was deprecated in langchain-core 0.1.46 and will be removed in 1.0. Use :meth:`~invoke` instead.
+  relevant_docs = retriever.get_relevant_documents(question)
+{
+    "original_document": "<html><head><title>Medical Record</title></head>\n<body>\n<div class=\"section\">\n  <h2>Chief complaint.</h2>\n  <p>\nJaw, clenching this morning, patient concern for seizure.\n  </p>\n</div>\n<div class=\"section\">\n  <h2>HPI</h2>\n  <p>This is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n  </p>\n</div>\n<div class=\"section\">\n  <h2>Medical history</h2>\n  <ul>\n    <li><strong>Hospital medical history:</strong> <em>Seizure<br />\n    Stroke.</em></li>\n  </ul>\n</div>\n<div class=\"section\">\n  <h2>Physical exam.</h2>\n  <p>The patient is awake alert while appearing in no acute distress. Pupils are equal, round, reactive, extractive muscles are intact.\n    Speech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\n    Normal professional, perfusion, regular rate and rhythm. Non-labored respirations with equal chest rise.\n  </p>\n</div>\n<div class=\"section\">\n  <h2>Medical decision-making.</h2>\n  <p><em>Is the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw<br />\n    Differential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure</em>\n  </p>\n</div>\n<div class=\"section\">\n  <h2>Plan.</h2>\n  <p>The patient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process.\n    Your analysis is without signs of infection. I've offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n  </p>\n</div>\n<div class=\"section\">\n  <h2>Independent history.</h2>\n  <p><em>I've independently viewed interpreted the labs, EKG, all imaging.\n    Discussed all test results with patient and her husband And updated on expected disease course.</em>\n  </p>\n</div>\n<div class=\"section\">\n  <h2>Disposition.</h2>\n  <p>Disposition discharged home.\n  </p>\n</div>\n</body></html></head><title>Medical Record</title></body>\n</html>",
+    "diagnostic_codes": [],
+    "diagnoses": []
+}
+
+
+
+Time to completion
+Time: 28.796316 seconds
+
+
+==========================
+Starting query using model llama3.2:latest please wait...
+{
+    "original_document": "Chief complaint.\nJaw, clenching this morning, patient concern for seizure.\n\nHPI\nThis is a 77-year-old female, the history of a prior stroke with prior seizure since into the emergency department after feeling her jaw clenching this morning. She thinks that it may have been seizure activity, however, was very different from prior seizures that she has experienced. She states she’s never had jaw spasm like this before. She does have a dysarthria and aphasia from prior stroke at her baseline which she states unchanged. She reports that she’s been compliant with her Keppra. She denies any recent infection or fever. Her husband states that she’s had similar symptoms in the past and they were unable to find any diagnosis.\n\nHospital medical history\nSeizure\nStroke.\n\nPhysical exam.\nPatient awake alert while appearing in no acute distress.\nPupils are equal round reactive, extractive muscles are intact.\nSpeech is with mild dysarthria, mild aphasia, patient reports at her baseline, strength and sensation are normal in all upper and lower extremities, face is symmetrical, oropharynx is clear.\nNormal professional, perfusion, regular rate and rhythm.\nNon-labored respirations with equal chest rise.\n\nMedical decision-making.\nIs the 77-year-old female with history of prior stroke and prior seizures presents into the emergency department after a transient spasm of her jaw\nDifferential diagnosis includes muscle spasm, dehydration, occult infection, electrolyte, abnormalities, and cranial hemorrhage, low suspicion for focal seizure\n\nPatient has had no recurrence of her symptoms during the emergency department. EKG shows a sinus rhythm. Chemistry and CBC are reassuring. Component is negative. CT is negative for acute process. Your analysis is without signs of infection. I’ve offered the patient and her husband further observation, however they are more comfortable at this time with discharge. We will follow up with her neurologist as an outpatient. They are understanding of return precautions.\n\nIndependent history obtained from EMS, patient’s husband, patient’s aid.\nI’ve independently viewed interpreted the labs, EKG, all imaging.\n\nDiscussed all test results with patient and her husband And updated on expected disease course.\n\nDisposition discharged home.\n\nDiagnosis\nFacial spasm",
+    "diagnostic_codes": [
+        "G3789",
+        "S0301XA"
+    ],
+    "diagnoses": [
+        "Muscle spasm, facial spasm"
+    ]
+}
+
+
+Time to completion
+Time: 12.714922 seconds
+
+
+==========================
+Starting query using model gemma3:270m please wait...
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 380, in <module>
+    askRAGQuestion(question, model, retriever, jsonStructureTrivial.model_json_schema())
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 126, in askRAGQuestion
+    response = requests.post(url, json=prompt_data, stream=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py", line 1374, in getresponse
+    response.begin()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py", line 279, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/__main__.py", line 71, in <module>
+    cli.main()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 508, in main
+    run()
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/adapter/../../debugpy/launcher/../../debugpy/../debugpy/server/cli.py", line 358, in run_file
+    runpy.run_path(target, run_name="__main__")
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+    return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+    _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+  File "/Users/peterhartnett/.vscode/extensions/ms-python.debugpy-2025.16.0-darwin-arm64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+    exec(code, run_globals)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 380, in <module>
+    askRAGQuestion(question, model, retriever, jsonStructureTrivial.model_json_schema())
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/medCodeLLM.py", line 126, in askRAGQuestion
+    response = requests.post(url, json=prompt_data, stream=True)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "/Users/peterhartnett/Documents/UniversityWork/Thesis/Thesis/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py", line 1374, in getresponse
+    response.begin()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py", line 279, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt

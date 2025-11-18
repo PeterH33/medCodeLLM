@@ -69,31 +69,88 @@ def setupRAG():
     # RAG Prepwork ends
 
 
-# Query system
-def askRAGQuestion(question, model, retriever):
-    try:
-        # Define llm
-        # NOTE There are a ton of options on this method, investigate more later
-        llm = ChatOllama(model=model)
+# # NOTE Original RAG Query system, consider this structure in the future, perhaps this method works better with the retrievalQA chain
+# def askRAGQuestion(question, model, retriever):
+#     try:
+#         # Define llm
+#         # NOTE There are a ton of options on this method, investigate more later
+#         llm = ChatOllama(model=model)
 
-        # Create retrievalQA chain
-        qaChain = RetrievalQA.from_chain_type(
-            llm=llm,
-            chain_type='stuff',
-            retriever=retriever,
-            return_source_documents=True,
-        )
-    except Exception as e:
-        print(f'Error in settingup llm and qaChain in askRAGQuestion(): {e}')
+#         # Create retrievalQA chain
+#         qaChain = RetrievalQA.from_chain_type(
+#             llm=llm,
+#             chain_type='stuff',
+#             retriever=retriever,
+#             return_source_documents=True,
+#         )
+#     except Exception as e:
+#         print(f'Error in settingup llm and qaChain in askRAGQuestion(): {e}')
+#     try:
+#         result = qaChain.invoke({"query": question})
+#         print(f'ans: {result["result"]}')
+#         print('\nSource Documents: ')
+#         for i, sourceDocChunk in enumerate(result['source_documents']):
+#             print(f'ChunkNumber:{i+1}, File: {sourceDocChunk.metadata.get("source_file", "N/A")}')
+#             print(f'Content Snippet: {sourceDocChunk.page_content[:350]}')
+#     except Exception as e:
+#         print(f'Error in askRAGQuestion(): {e}')
+
+def askRAGQuestion(question, model, retriever, jsonSchema=None):
     try:
-        result = qaChain.invoke({"query": question})
-        print(f'ans: {result["result"]}')
-        print('\nSource Documents: ')
-        for i, sourceDocChunk in enumerate(result['source_documents']):
-            print(f'ChunkNumber:{i+1}, File: {sourceDocChunk.metadata.get("source_file", "N/A")}')
-            print(f'Content Snippet: {sourceDocChunk.page_content[:350]}')
+        # Retrieve relevant documents
+        relevant_docs = retriever.get_relevant_documents(question)
+        
+        # Build context from retrieved documents
+        context = "\n\n".join([doc.page_content for doc in relevant_docs])
+        
+        # Create the enhanced prompt with context, not sure if this is better than qaChain above, worth looking into
+        enhanced_prompt = f"""Context information from relevant documents:
+{context}
+
+Question: {question}
+
+Please answer the question based on the context provided above."""
+        
+        url = "http://localhost:11434/api/generate"
+        prompt_data = {
+            "model": model,
+            "prompt": enhanced_prompt,
+            "format": jsonSchema
+        }
+        
+        response = requests.post(url, json=prompt_data, stream=True)
+        
+        collected = ""  
+        
+        for line in response.iter_lines():
+            if not line:
+                continue
+            data = json.loads(line.decode("utf-8"))
+            if "response" in data:
+                print(data["response"], end="", flush=True)
+                collected += data["response"]
+                
+            if data.get("done"):
+                break
+        
+        print()
+        
+        # Print source documents
+        # print('\nSource Documents:')
+        # for i, sourceDocChunk in enumerate(relevant_docs):
+        #     print(f'ChunkNumber: {i+1}, File: {sourceDocChunk.metadata.get("source_file", "N/A")}')
+        #     print(f'Content Snippet: {sourceDocChunk.page_content[:350]}')
+        #     print()
+        
+        # # Return the collected response and sources
+        # return {
+        #     "result": collected,
+        #     "source_documents": relevant_docs
+        # }
+        
     except Exception as e:
         print(f'Error in askRAGQuestion(): {e}')
+        return None
 
 
 def rawOllamaCall(question, model):
@@ -282,17 +339,22 @@ with open('prompts/instructionPrompt.txt', 'r') as f:
 with open('prompts/fewShotPrompt.txt', 'r') as f:
     fewShotPrompt = f.read()
 
-RESULTS_PATH = './results/zeroshot'
+
+# NOTE Specify results path for different tests, this can be cleaner.
+RESULTS_PATH = './results/rag'
+
+retriever = setupRAG()
 
 tee.startTee(RESULTS_PATH)
 
-models = ["deepseek-r1:8b", 'llama3.2:latest', 'gemma3:270m', 'mistral:7b', 'phi4:14b']
+
+models = ["deepseek-r1:8b", 'llama3.2:latest', 'gemma3:4b', 'mistral:7b', 'phi4:14b']
 
 # NOTE EDIT BEFORE RUNS - Ouput document heading 
 print('Running test using few-shot prompting, and trivial Json schema for Ollama Structured output. gpt-oss replaced with gemma3:270m')
 
 print('Iniital prompt:')
-print('Directions: ' + instructionPrompt + ' Few shot prompt: ' + fewShotPrompt + 'Doctors note: <Variable>')
+print('Directions: ' + instructionPrompt + ' RAG Context ' + 'Doctors note: <Variable>')
 
 
 for note in doctorsNotes:
@@ -307,7 +369,8 @@ for note in doctorsNotes:
         # askRAGQuestion(question, model)
         # rawOllamaCall(question, model)
         # jsonSchemaOllamaCall(question, model, jsonStructureTrivial.model_json_schema())
-        jsonSchemaOllamaCall(fewShotQuestion, model, jsonStructureTrivial.model_json_schema())
+        # jsonSchemaOllamaCall(fewShotQuestion, model, jsonStructureTrivial.model_json_schema())
+        askRAGQuestion(question, model, retriever, jsonStructureTrivial.model_json_schema())
 
         endTime = time.perf_counter()
 
