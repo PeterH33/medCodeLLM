@@ -1,6 +1,9 @@
+"""This script verifies whether or not models are complying with providing output as a specifically formated JSON structure. After the introduction of the Ollama structured output system compliance was at 100% or 0% for each model depending on output capabilities."""
 import re
 
+
 filepath = 'results/zeroshot/output009.txt'
+
 
 # Regex to match the JSON block with any content in the fields
 json_pattern = re.compile(

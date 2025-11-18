@@ -1,7 +1,7 @@
 This file contains the Diagnostic codes to accompany the medical notes. Codes were identified by practicing medical doctor.
 
 Note 1: Subjective\nChief Complaint: Sore throat...
-streptococcal pharyngitis J02.0
+acute streptococcal pharyngitis J02.0
 
 Note 2: HPI:\nIs an 81 year...
 Fall from standing 

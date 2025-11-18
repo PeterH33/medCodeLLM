@@ -1,7 +1,11 @@
+"""A simple script to extract runtimes from output files for analysis"""
+
 import re
 import pandas as pd
 
-targetFile = 'results/zeroshot/output007.txt'
+targetFile = 'results/zeroshot/output009.txt'
+
+
 with open(targetFile) as f:
     text = f.read()
 
@@ -28,4 +32,4 @@ for model, time_str in matches:
 
 df = pd.DataFrame(data)
 
-df.to_excel('times.xlsx', index=False)
+df.to_excel('resultsTimes.xlsx', index=False)
