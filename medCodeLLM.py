@@ -183,8 +183,6 @@ def jsonSchemaOllamaCall(question, model, jsonSchema):
 
     response = requests.post(url, json=prompt, stream=True)
 
-    collected = ""  # hold streamed JSON text
-
     for line in response.iter_lines():
         if not line:
             continue

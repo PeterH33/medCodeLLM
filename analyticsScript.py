@@ -5,7 +5,7 @@ import re
 import pandas as pd
 
 
-targetFile = 'results/rag/output003.txt'
+targetFile = 'results/zeroshot/output007.txt'
 
 
 # ======================================================================================
